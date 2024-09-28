@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.gms)
+
     kotlin("kapt")
 }
 
@@ -40,6 +42,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.firebase.firestore)
+    implementation(platform(libs.firebase.boom))
     implementation ("androidx.appcompat:appcompat:1.4.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

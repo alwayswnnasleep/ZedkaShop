@@ -7,6 +7,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.zedkashop.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,7 +17,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_ZedkaShop)
         super.onCreate(savedInstanceState)
-
+        val fs = Firebase.firestore
+        fs.collection("tovari")
+            .document().set(mapOf("name" to "Helmet"))
 
         supportActionBar?.show()
 

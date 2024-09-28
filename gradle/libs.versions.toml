@@ -12,8 +12,12 @@ lifecycleLivedataKtx = "2.8.6"
 lifecycleViewmodelKtx = "2.8.6"
 navigationFragmentKtx = "2.8.1"
 navigationUiKtx = "2.8.1"
-
+gmsVersion="4.4.2"
+boomVersion="33.3.0"
 [libraries]
+
+firebase-boom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "boomVersion" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore-ktx"}
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -27,6 +31,10 @@ androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navi
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 
 [plugins]
+
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+gms =  { id = "com.google.gms.google-services", version.ref = "gmsVersion" }
+
+
 
