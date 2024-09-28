@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.MediaController
 import android.widget.VideoView
 import androidx.fragment.app.Fragment
+import com.example.zedkashop.R
 import com.example.zedkashop.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
