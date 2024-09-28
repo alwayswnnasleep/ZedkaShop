@@ -18,8 +18,10 @@ class SplashActivity : AppCompatActivity() {
         gifImageView.setImageResource(R.drawable.z_logo) // Replace with your GIF resource
 
         Handler().postDelayed({
+
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }, splashTimeOut)
+
     }
 }

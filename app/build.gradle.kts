@@ -40,6 +40,7 @@ android {
 }
 
 dependencies {
+    implementation ("androidx.appcompat:appcompat:1.4.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
