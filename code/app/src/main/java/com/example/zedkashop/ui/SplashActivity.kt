@@ -16,7 +16,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         val gifImageView: GifImageView = findViewById(R.id.gifImageView)
-        gifImageView.setImageResource(R.drawable.z_logo) // Replace with your GIF resource
+        gifImageView.setImageResource(R.drawable.splash_screen) // Replace with your GIF resource
 
         Handler().postDelayed({
 
