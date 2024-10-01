@@ -15,18 +15,18 @@ import com.example.zedkashop.databinding.FragmentProfileBinding
 
 import com.example.zedkashop.ui.login.RegViewModel
 
-class ProfileFragment : Fragment() {
+class ProfileAfterAuthFragment : Fragment() {
     private lateinit var viewModel: ProfileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        var view = inflater.inflate(R.layout.fragment_profile,container,false)
-        view.findViewById<TextView>(R.id.enterLog).setOnClickListener{
-            view.findNavController().navigate(R.id.action_navigation_profile_to_authFragment2)
+        var view = inflater.inflate(R.layout.fragment_profileafterauth,container,false)
+        view.findViewById<ImageView>(R.id.profilePhoto)
+        view.findViewById<ImageView>(R.id.logOut).setOnClickListener(){
+            viewModel.signOut()
         }
-
         return view
     }
 

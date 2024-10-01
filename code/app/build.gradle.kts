@@ -42,6 +42,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(platform(libs.firebase.boom))
     implementation ("androidx.appcompat:appcompat:1.4.0")

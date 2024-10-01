@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         fs.collection("tovari")
             .document().set(mapOf("name" to "Helmet"))
 
-        supportActionBar?.show()
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
