@@ -52,7 +52,7 @@
 
 • Окно загрузки Представляет собой SplashScreen, во время которого происходит подгрузка приложения.
 
-  ![Окно загрузки](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/SplashScreen.png){: width="300"}
+  ![Окно загрузки](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/SplashScreen.png){: width="100"}
 
 • Главная страница: Представляет список товаров из категорий наиболее популярные и товары с наибольшим рейтингом.
 
