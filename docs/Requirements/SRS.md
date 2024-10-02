@@ -52,39 +52,39 @@
 
 • Окно загрузки Представляет собой SplashScreen, во время которого происходит подгрузка приложения.
 
-  ![Окно загрузки](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/SplashScreen.png)
+  ![Окно загрузки](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/SplashScreen.png){: width="300"}
 
 • Главная страница: Представляет список товаров из категорий наиболее популярные и товары с наибольшим рейтингом.
 
-   ![Главная страница](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/HomePage.png)
+   ![Главная страница](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/HomePage.png){: width="300"}
 
 • Каталог: Представляет ассортимент специальной экипировки, доступной для покупки. Пользователи могут просматривать товары, читать их описания, цены и характеристики.
 
-  ![Каталог](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/CataloguePage.png)
+  ![Каталог](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/CataloguePage.png){: width="300"}
 
 • Фильтр:Позволяет пользователям уточнять поиск экипировки по различным параметрам, таким как размер, цена и производитель. Это помогает быстрее находить нужные товары.
 
-  ![Фильтр](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/FilterPage.png)
+  ![Фильтр](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/FilterPage.png){: width="300"}
 
 • Корзина:Содержит список выбранной экипировки, которую пользователь планирует приобрести. Здесь можно просматривать и изменять количество товаров, а также удалять ненужные позиции перед оформлением заказа.
 
-  ![Корзина](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/CartPage.png)
+  ![Корзина](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/CartPage.png){: width="300"}
 
 • Избранное: Позволяет пользователям сохранять понравившиеся товары для быстрого доступа в будущем. Удобно для сравнения и принятия решений о покупке.
 
-  ![Избранное](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/FavPage.png)
+  ![Избранное](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/FavPage.png){: width="300"}
 
 • Профиль: Страница для управления личной информацией пользователя, такой как адреса доставки, история заказов и настройки учетной записи. Пользователи могут обновлять свои данные и следить за своими покупками.
 
-  ![Профиль](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/ProfilePage.png)
+  ![Профиль](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/ProfilePage.png){: width="300"}
 
 • Страница авторизации:Позволяет существующим пользователям входить в свою учетную запись, используя логин и пароль. Это обеспечивает доступ к персонализированным функциям и истории заказов.
 
-  ![Страница авторизации](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/AuthPage.png)
+  ![Страница авторизации](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/AuthPage.png){: width="300"}
 
 • Страница регистрации: Предоставляет возможность новым пользователям создать учетную запись, чтобы начать делать покупки. Пользователи вводят свои данные для создания профиля и получения доступа к функциям магазина.
 
-  ![Страница регистрации](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/RegPage.png)
+  ![Страница регистрации](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Mockups/RegPage.png){: width="300"}
 
 Пример взаимодействия:
 
