@@ -6,4 +6,5 @@ class ProductDB {
     val description: String = ""
     val image_url: String = ""
     val rating: String = ""
+
 }

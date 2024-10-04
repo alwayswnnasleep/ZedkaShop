@@ -11,7 +11,7 @@ class SplashActivity : AppCompatActivity() {
     private val splashTimeOut: Long = 3000 // Duration of the splash screen in milliseconds
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        supportActionBar?.hide()
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 

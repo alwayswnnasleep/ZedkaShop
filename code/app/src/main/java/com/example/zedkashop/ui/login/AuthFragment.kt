@@ -1,7 +1,8 @@
 package com.example.zedkashop.ui.login
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,19 @@ import com.example.zedkashop.R
 
 class AuthFragment : Fragment() {
     private lateinit var viewModel: AuthViewModel
+    private lateinit var sharedPreferences: SharedPreferences
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+
+        // Проверяем состояние авторизации при создании фрагмента
+        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+        if (isLoggedIn) {
+            // Если пользователь уже авторизован, переходим на профиль
+            view?.findNavController()?.navigate(R.id.authFragment2)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,34 +39,52 @@ class AuthFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
         val view = inflater.inflate(R.layout.fragment_auth, container, false)
 
-        view.findViewById<Button>(R.id.authButton).setOnClickListener {
-            val email = view.findViewById<EditText>(R.id.enterEmailAuth).text.toString().trim()
-            val password = view.findViewById<EditText>(R.id.enterPasswordAuth).text.toString().trim()
+        val emailEditText = view.findViewById<EditText>(R.id.enterEmailAuth)
+        val passwordEditText = view.findViewById<EditText>(R.id.enterPasswordAuth)
+        val authButton = view.findViewById<Button>(R.id.authButton)
+        val haveAccountTextView = view.findViewById<TextView>(R.id.haveAccount)
+        val backButton = view.findViewById<ImageView>(R.id.ArrowBack)
+
+        authButton.setOnClickListener {
+            val email = emailEditText.text.toString().trim()
+            val password = passwordEditText.text.toString().trim()
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 viewModel.signIn(email, password)
             } else {
-                Toast.makeText(context, "Пожалуйста, введите email и пароль", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Пожалуйста, введите email и пароль", Toast.LENGTH_SHORT).show()
             }
         }
 
         viewModel.loginSuccess.observe(viewLifecycleOwner) { success ->
             if (success) {
-                // Переход на профиль
-                view.findNavController().navigate(R.id.action_global_profileAfterAuthFragment)
+                // Сохраняем состояние авторизации
+                with(sharedPreferences.edit()) {
+                    putBoolean("isLoggedIn", true)
+                    apply()
+                }
+                view.findNavController().navigate(R.id.action_global_navigation_profile)
             } else {
-                Toast.makeText(context, "Ошибка входа. Проверьте email и пароль.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Ошибка входа. Проверьте email и пароль.", Toast.LENGTH_SHORT).show()
             }
         }
 
-        view.findViewById<TextView>(R.id.haveAccount).setOnClickListener {
-            view.findNavController().navigate(R.id.action_authFragment2_to_navigation_reg)
+        haveAccountTextView.setOnClickListener {
+            view.findNavController().navigate(R.id.authFragment2)
         }
 
-        view.findViewById<ImageView>(R.id.ArrowBack).setOnClickListener {
-            view.findNavController().navigate(R.id.action_global_navigation_profile)
+        backButton.setOnClickListener {
+            view.findNavController().navigate(R.id.authFragment2)
         }
 
         return view
+    }
+
+    // Метод для выхода из приложения и очистки состояния авторизации
+    fun signOut() {
+        with(sharedPreferences.edit()) {
+            putBoolean("isLoggedIn", false)
+            apply()
+        }
     }
 }

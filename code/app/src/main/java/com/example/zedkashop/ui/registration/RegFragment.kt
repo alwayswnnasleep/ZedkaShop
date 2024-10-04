@@ -46,7 +46,7 @@ class RegFragment : Fragment() {
             view.findNavController().navigate(R.id.action_navigation_reg_to_authFragment22)
         }
         view.findViewById<ImageView>(R.id.ArrowBack).setOnClickListener(){
-            view.findNavController().navigate(R.id.action_global_navigation_profile)
+            view.findNavController().navigate(R.id.navigation_profile)
         }
         return view
 

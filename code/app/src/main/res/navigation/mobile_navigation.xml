@@ -34,7 +34,7 @@
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" >
         <action
-            android:id="@+id/action_navigation_profile_to_authFragment2"
+            android:id="@+id/action_navigation_profile_to_navigation"
             app:destination="@id/navigation" />
     </fragment>
 
@@ -61,15 +61,9 @@
         <action
             android:id="@+id/action_global_navigation_profile"
             app:destination="@id/navigation_profile" />
-        <action
-            android:id="@+id/action_global_profileAfterAuthFragment"
-            app:destination="@id/profileAfterAuthFragment" />
+
     </navigation>
-    <fragment
-        android:id="@+id/profileAfterAuthFragment"
-        android:name="com.example.zedkashop.ui.profile.ProfileAfterAuthFragment"
-        android:label="fragment_profileafterauth"
-        tools:layout="@layout/fragment_profileafterauth" />
+
 
 
 </navigation>

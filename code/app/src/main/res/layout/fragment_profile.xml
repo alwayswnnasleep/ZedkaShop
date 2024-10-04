@@ -3,26 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileFragment"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/enterLog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="152dp"
-        android:text="Войти в аккаунт"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:background="#FFFFFF">
 
     <ImageView
-        android:id="@+id/LogOut"
-        android:layout_width="172dp"
-        android:layout_height="159dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="184dp"
+        android:id="@+id/profilePhoto"
+        android:layout_width="159dp"
+        android:layout_height="137dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="56dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/common_full_open_on_phone" />
+        app:srcCompat="@drawable/profilephoto" />
+
+    <ImageView
+        android:id="@+id/logOut"
+        android:layout_width="74dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/user_logout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

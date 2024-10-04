@@ -1,9 +1,10 @@
 package com.example.zedkashop
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.zedkashop.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -15,15 +16,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         setTheme(R.style.Theme_ZedkaShop)
+
+
         super.onCreate(savedInstanceState)
         val fs = Firebase.firestore
         fs.collection("tovari")
             .document().set(mapOf("name" to "Helmet"))
 
-
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
+             binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.navView
@@ -34,5 +36,11 @@ class MainActivity : AppCompatActivity() {
 
         // Убираем настройку Action Bar с NavController
         navView.setupWithNavController(navController)
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+
     }
 }
