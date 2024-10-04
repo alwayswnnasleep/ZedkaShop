@@ -50,6 +50,7 @@ class AuthFragment : Fragment() {
             val password = passwordEditText.text.toString().trim()
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
+                // Вызов метода входа с передачей email
                 viewModel.signIn(email, password)
             } else {
                 Toast.makeText(requireContext(), "Пожалуйста, введите email и пароль", Toast.LENGTH_SHORT).show()
@@ -58,9 +59,11 @@ class AuthFragment : Fragment() {
 
         viewModel.loginSuccess.observe(viewLifecycleOwner) { success ->
             if (success) {
+                val email = emailEditText.text.toString().trim() // Получаем email здесь
                 // Сохраняем состояние авторизации
                 with(sharedPreferences.edit()) {
                     putBoolean("isLoggedIn", true)
+                    putString("userEmail", email) // Сохраняем email
                     apply()
                 }
                 view.findNavController().navigate(R.id.action_global_navigation_profile)

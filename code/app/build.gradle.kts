@@ -42,6 +42,7 @@ android {
 }
 
 dependencies {
+    implementation ("androidx.recyclerview:recyclerview:1.2.1")
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(platform(libs.firebase.boom))

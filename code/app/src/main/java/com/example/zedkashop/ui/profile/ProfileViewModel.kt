@@ -12,4 +12,5 @@ class ProfileViewModel : ViewModel() {
     fun signOut() {
         auth.signOut()
     }
+
 }
