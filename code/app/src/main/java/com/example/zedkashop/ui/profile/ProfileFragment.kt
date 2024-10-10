@@ -38,7 +38,7 @@ class ProfileFragment : Fragment() {
         if (!isLoggedIn) {
             // Если пользователь не авторизован, переходим в AuthFragment
             view.post {
-                view.findNavController().navigate(R.id.action_navigation_profile_to_navigation)
+                view.findNavController().navigate(R.id.action_navigation_profile_to_auth_navigation)
             }
             return view
         }
@@ -62,7 +62,7 @@ class ProfileFragment : Fragment() {
                 remove("isLoggedIn")
                 apply()
             }
-            view.findNavController().navigate(R.id.action_navigation_profile_to_navigation)
+            view.findNavController().navigate(R.id.action_navigation_profile_to_auth_navigation)
         }
 
         return view

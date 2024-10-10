@@ -3,13 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.zedkashop.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_productListFragment"
+            app:destination="@id/productListFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -22,6 +29,7 @@
         android:name="com.example.zedkashop.ui.cart.CartFragment"
         android:label="@string/title_cart"
         tools:layout="@layout/fragment_cart" />
+
     <fragment
         android:id="@+id/navigation_favorites"
         android:name="com.example.zedkashop.ui.favorites.FavoritesFragment"
@@ -32,17 +40,33 @@
         android:id="@+id/navigation_profile"
         android:name="com.example.zedkashop.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" >
-        <action
-            android:id="@+id/action_navigation_profile_to_navigation"
-            app:destination="@id/navigation" />
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_navigation_profile_to_addProductFragment"
             app:destination="@id/addProductFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_auth_navigation"
+            app:destination="@id/auth_navigation" />
     </fragment>
 
-    <navigation android:id="@+id/navigation"
+    <fragment
+        android:id="@+id/addProductFragment"
+        android:name="com.example.zedkashop.ui.addingproduct.AddProductFragment"
+        android:label="fragment_add_product"
+        tools:layout="@layout/fragment_add_product" />
+
+    <fragment
+        android:id="@+id/productListFragment"
+        android:name="com.example.zedkashop.ui.ProductListFragment"
+        android:label="Product List" />
+
+    <action
+        android:id="@+id/action_homeFragment_to_productListFragment"
+        app:destination="@id/productListFragment" />
+
+    <navigation android:id="@+id/auth_navigation"
         app:startDestination="@id/authFragment2">
+
         <fragment
             android:id="@+id/authFragment2"
             android:name="com.example.zedkashop.ui.login.AuthFragment"
@@ -52,25 +76,24 @@
                 android:id="@+id/action_authFragment2_to_navigation_reg"
                 app:destination="@id/navigation_reg" />
         </fragment>
+
         <fragment
             android:id="@+id/navigation_reg"
             android:name="com.example.zedkashop.ui.registration.RegFragment"
             android:label="@string/title_dashboard"
-            tools:layout="@layout/fragment_reg" >
+            tools:layout="@layout/fragment_reg">
             <action
-                android:id="@+id/action_navigation_reg_to_authFragment22"
+                android:id="@+id/action_navigation_reg_to_authFragment2"
                 app:destination="@id/authFragment2" />
         </fragment>
+
         <action
             android:id="@+id/action_global_navigation_profile"
             app:destination="@id/navigation_profile" />
-
     </navigation>
     <fragment
-        android:id="@+id/addProductFragment"
-        android:name="com.example.zedkashop.ui.addingproduct.AddProductFragment"
-        android:label="fragment_add_product"
-        tools:layout="@layout/fragment_add_product" />
-
+        android:id="@+id/productDetailFragment"
+        android:name="com.example.zedkashop.ui.ProductDetailFragment"
+        android:label="ProductDetailFragment" />
 
 </navigation>

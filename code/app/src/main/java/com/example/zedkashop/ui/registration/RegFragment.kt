@@ -43,7 +43,7 @@ class RegFragment : Fragment() {
         }
         view.findViewById<TextView>(R.id.regText)
         view.findViewById<TextView>(R.id.haveAccount).setOnClickListener{
-            view.findNavController().navigate(R.id.action_navigation_reg_to_authFragment22)
+            view.findNavController().navigate(R.id.action_navigation_reg_to_authFragment2)
         }
         view.findViewById<ImageView>(R.id.ArrowBack).setOnClickListener(){
             view.findNavController().navigate(R.id.navigation_profile)
