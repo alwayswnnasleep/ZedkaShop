@@ -4,38 +4,50 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.zedkashop.R
 import com.example.zedkashop.databinding.FragmentDashboardBinding
 import com.example.zedkashop.ui.base.BaseFragment
 
 class DashboardFragment : BaseFragment() {
 
     private var _binding: FragmentDashboardBinding? = null
-
-
     private val binding get() = _binding!!
-    override fun onResume() {
-        super.onResume()
-        setActionBarTitle("Каталог") // Устанавливаем заголовок
-    }
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
-
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setActionBarTitle("Каталог") // Устанавливаем заголовок
+
+        // Список элементов для отображения
+        val items = listOf(
+            CatalogItem("Шлем", R.drawable.helmet),
+            CatalogItem("Бронежилет", R.drawable.armor),
+            CatalogItem("Обувь", R.drawable.foot),
+            CatalogItem("Одежда", R.drawable.wear),
+            CatalogItem("Разгрузочная система", R.drawable.razgruz)
+        )
+
+        // Настройка RecyclerView
+        binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
+        binding.recyclerView.adapter = CatalogAdapter(items) { catalogItem ->
+            // Создание Bundle для передачи выбранной категории
+            val bundle = Bundle().apply {
+                putString("category", catalogItem.name) // Передаем выбранную категорию
+            }
+
+            // Навигация к ProductCatalogFragment с передачей данных
+            findNavController().navigate(R.id.action_navigation_dashboard_to_productCatalogFragment, bundle)
         }
-        return root
     }
 
     override fun onDestroyView() {

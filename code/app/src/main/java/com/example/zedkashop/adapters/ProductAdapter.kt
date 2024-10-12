@@ -7,13 +7,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.zedkashop.R
 import com.example.zedkashop.data.ProductDB
 
 class ProductAdapter(
     private val products: List<ProductDB>,
-    private val onProductClick: (ProductDB) -> Unit
+    private val onProductClick: (ProductDB) -> Unit // Обработчик клика
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -27,7 +26,7 @@ class ProductAdapter(
         holder.bind(product)
 
         holder.itemView.setOnClickListener {
-            onProductClick(product)
+            onProductClick(product) // Обработка клика
         }
     }
 
@@ -39,17 +38,13 @@ class ProductAdapter(
         private val productName: TextView = itemView.findViewById(R.id.productName)
         private val productPrice: TextView = itemView.findViewById(R.id.productPrice)
         private val productImage: ImageView = itemView.findViewById(R.id.productImage)
-        private val addToCart: ImageView = itemView.findViewById(R.id.addToCart)
+
         fun bind(product: ProductDB) {
             productName.text = product.name
             productPrice.text = product.price
 
             Glide.with(itemView.context)
-                .load(product.imageUrl) // URL изображения из объекта ProductDB
-                .apply(RequestOptions()
-                    //   .placeholder(R.drawable.placeholder) // Замените на ваш ресурс для загрузки
-                  //  .error(R.drawable.error) // Замените на ваш ресурс для ошибки
-                )
+                .load(product.imageUrl)
                 .into(productImage)
         }
     }

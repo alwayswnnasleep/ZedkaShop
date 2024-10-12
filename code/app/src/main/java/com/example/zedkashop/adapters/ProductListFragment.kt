@@ -1,11 +1,11 @@
 package com.example.zedkashop.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zedkashop.R
@@ -30,10 +30,8 @@ class ProductListFragment : Fragment(R.layout.fragment_product_list) {
             val bundle = Bundle().apply {
                 putSerializable("product", product) // Передаем продукт как Serializable
             }
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.productDetailFragment, ProductDetailFragment::class.java, bundle)
-                .addToBackStack(null)
-                .commit()
+            // Используйте навигацию
+            findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment, bundle)
         }
 
         recyclerView.adapter = productAdapter // Установите адаптер для recyclerView

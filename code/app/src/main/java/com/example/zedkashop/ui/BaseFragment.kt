@@ -8,7 +8,7 @@ open class BaseFragment : Fragment() {
     // Этот метод вызывается, когда фрагмент становится видимым
     override fun onResume() {
         super.onResume()
-        showActionBar()
+        showActionBar() // Показываем ActionBar при возвращении к фрагменту
     }
 
     // Метод для показа ActionBar

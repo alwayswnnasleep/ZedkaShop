@@ -1,6 +1,7 @@
 package com.example.zedkashop.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,12 +29,13 @@ class ProductDetailFragment : Fragment() {
             binding.productPrice.text = it.price
             binding.productDescription.text = it.description
             binding.productCategory.text = it.category
+            binding.productConsumer.text = it.consumer // Ensure this field exists
 
-            // Установка изображения товара
+            // Load the product image
             Glide.with(this)
-                .load(it.imageUrl) // Предполагается, что у вас есть поле imageUrl в ProductDB
+                .load(it.imageUrl)
                 .into(binding.productImage)
-        }
+        } ?: Log.e("ProductDetailFragment", "Product data is null")
 
         return binding.root
     }

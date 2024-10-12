@@ -22,7 +22,14 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.example.zedkashop.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_navigation_dashboard_to_productCatalogFragment"
+            app:destination="@id/productCatalogFragment" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_cart"
@@ -32,7 +39,7 @@
 
     <fragment
         android:id="@+id/navigation_favorites"
-        android:name="com.example.zedkashop.ui.favorites.FavoritesFragment"
+        android:name="com.example.zedkashop.ui.addingproduct.AddProductFragment"
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites" />
 
@@ -58,7 +65,11 @@
     <fragment
         android:id="@+id/productListFragment"
         android:name="com.example.zedkashop.ui.ProductListFragment"
-        android:label="Product List" />
+        android:label="Product List" >
+        <action
+            android:id="@+id/action_productListFragment_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
 
     <action
         android:id="@+id/action_homeFragment_to_productListFragment"
@@ -95,5 +106,13 @@
         android:id="@+id/productDetailFragment"
         android:name="com.example.zedkashop.ui.ProductDetailFragment"
         android:label="ProductDetailFragment" />
+    <fragment
+        android:id="@+id/productCatalogFragment"
+        android:name="com.example.zedkashop.ui.product.ProductCatalogFragment"
+        android:label="ProductCatalogFragment" >
+        <action
+            android:id="@+id/action_productCatalogFragment2_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
 
 </navigation>
