@@ -14,13 +14,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.zedkashop.R
 import com.example.zedkashop.databinding.FragmentAuthBinding
+import com.example.zedkashop.ui.base.BaseFragment
 import com.example.zedkashop.ui.login.AuthViewModel
 import com.example.zedkashop.ui.login.RegViewModel
 import org.w3c.dom.Text
 
-class RegFragment : Fragment() {
+class RegFragment : BaseFragment() {
     private lateinit var viewModel: RegViewModel
-
+    override fun onResume() {
+        super.onResume()
+        setActionBarTitle("Создание аккаунта") // Устанавливаем заголовок
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

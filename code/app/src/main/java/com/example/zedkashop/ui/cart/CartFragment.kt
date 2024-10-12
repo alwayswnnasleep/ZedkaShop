@@ -8,15 +8,19 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.zedkashop.databinding.FragmentCartBinding
+import com.example.zedkashop.ui.base.BaseFragment
 
 
-class CartFragment : Fragment() {
+class CartFragment : BaseFragment() {
 
     private var _binding: FragmentCartBinding? = null
 
 
     private val binding get() = _binding!!
-
+    override fun onResume() {
+        super.onResume()
+        setActionBarTitle("Корзина")
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

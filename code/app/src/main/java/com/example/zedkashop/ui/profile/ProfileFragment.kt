@@ -16,8 +16,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.zedkashop.R
+import com.example.zedkashop.ui.base.BaseFragment
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : BaseFragment() {
     private lateinit var viewModel: ProfileViewModel
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -93,5 +94,9 @@ class ProfileFragment : Fragment() {
 
         val dialog = builder.create()
         dialog.show()
+    }
+    override fun onResume() {
+        super.onResume()
+        setActionBarTitle("Профиль")
     }
 }

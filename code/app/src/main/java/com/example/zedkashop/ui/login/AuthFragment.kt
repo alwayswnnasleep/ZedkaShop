@@ -15,8 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.zedkashop.R
+import com.example.zedkashop.ui.base.BaseFragment
 
-class AuthFragment : Fragment() {
+class AuthFragment : BaseFragment() {
     private lateinit var viewModel: AuthViewModel
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -31,7 +32,10 @@ class AuthFragment : Fragment() {
             view?.findNavController()?.navigate(R.id.authFragment2)
         }
     }
-
+    override fun onResume() {
+        super.onResume()
+        setActionBarTitle("Вход в аккаунт")
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -89,5 +93,6 @@ class AuthFragment : Fragment() {
             putBoolean("isLoggedIn", false)
             apply()
         }
+
     }
 }

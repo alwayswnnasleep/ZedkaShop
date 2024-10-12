@@ -8,5 +8,6 @@ data class ProductDB(
     val description: String = "",
     val imageUrl: String = "",
     val consumer: String = "",
-    val category: String = ""
+    val category: String = "",
+    var views: Int = 0
 ) : Serializable

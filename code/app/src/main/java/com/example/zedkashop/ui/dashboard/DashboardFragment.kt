@@ -8,15 +8,18 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.zedkashop.databinding.FragmentDashboardBinding
+import com.example.zedkashop.ui.base.BaseFragment
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : BaseFragment() {
 
     private var _binding: FragmentDashboardBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
 
+    private val binding get() = _binding!!
+    override fun onResume() {
+        super.onResume()
+        setActionBarTitle("Каталог") // Устанавливаем заголовок
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
