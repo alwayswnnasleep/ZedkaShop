@@ -24,11 +24,8 @@ class ProductListFragment : Fragment(R.layout.fragment_product_list) {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(
-            requireContext(),
-            LinearLayoutManager.HORIZONTAL,
-            false
-        ) // Горизонтальная прокрутка
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
         productAdapter = ProductAdapter(productList) { product ->
             val bundle = Bundle().apply {
                 putSerializable("product", product) // Передаем продукт как Serializable
@@ -38,11 +35,16 @@ class ProductListFragment : Fragment(R.layout.fragment_product_list) {
                 .addToBackStack(null)
                 .commit()
         }
+
+        recyclerView.adapter = productAdapter // Установите адаптер для recyclerView
         loadProducts()
     }
 
     private fun loadProducts() {
-        productList.clear() // Очистите список перед загрузкой
+        // Очистите список перед загрузкой
+        productList.clear()
+        productAdapter.notifyDataSetChanged() // Уведомите адаптер об очистке списка
+
         firestore.collection("products")
             .get()
             .addOnSuccessListener { documents ->

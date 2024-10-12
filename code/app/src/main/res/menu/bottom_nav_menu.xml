@@ -10,16 +10,15 @@
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/catalogue"
         android:title="@string/title_dashboard" />
-
+    <item
+        android:id="@+id/addProductFragment"
+        android:icon="@drawable/add"
+        android:title="@string/title_favorites" />
     <item
         android:id="@+id/navigation_cart"
         android:icon="@drawable/store"
         android:title="@string/title_cart" />
 
-    <item
-        android:id="@+id/navigation_favorites"
-        android:icon="@drawable/liked"
-        android:title="@string/title_favorites" />
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/profile"

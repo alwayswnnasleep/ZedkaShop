@@ -26,7 +26,6 @@ class ProductDetailFragment : Fragment() {
             binding.productName.text = it.name
             binding.productPrice.text = it.price
             binding.productDescription.text = it.description
-            binding.productRating.text = it.rating
             binding.productCategory.text = it.category
         }
 

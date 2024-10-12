@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.zedkashop.R
 import com.example.zedkashop.data.ProductDB
-
 
 class ProductAdapter(
     private val products: List<ProductDB>,
@@ -43,9 +43,12 @@ class ProductAdapter(
             productName.text = product.name
             productPrice.text = product.price
 
-            itemView.setOnClickListener {
-                onProductClick(product) // Передаем выбранный продукт
-            }
+
+            Glide.with(itemView.context)
+                .load(product.imageUrl) // URL изображения из объекта ProductDB
+               // .placeholder(R.drawable.placeholder) // Замените на ваш ресурс для загрузки
+                //.error(R.drawable.error) // Замените на ваш ресурс для ошибки
+                .into(productImage)
         }
     }
 }

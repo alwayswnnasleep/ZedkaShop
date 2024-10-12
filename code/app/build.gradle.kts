@@ -43,7 +43,9 @@ android {
 
 dependencies {
     implementation ("androidx.recyclerview:recyclerview:1.2.1")
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.storage)
     implementation(libs.firebase.firestore)
     implementation(platform(libs.firebase.boom))
     implementation ("androidx.appcompat:appcompat:1.4.0")

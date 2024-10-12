@@ -18,6 +18,7 @@ boomVersion="33.3.0"
 
 firebase-boom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "boomVersion" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore-ktx"}
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage-ktx"}
 firebase-auth = { module = "com.google.firebase:firebase-auth"}
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
