@@ -1,6 +1,5 @@
-package com.example.zedkashop.ui.home
+package com.example.zedkashop.ui.history
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,11 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zedkashop.R
 import com.example.zedkashop.data.ProductDB
+import com.example.zedkashop.ui.home.ProductAdapter
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 
-class HomeFragment : Fragment() {
+class ViewHistoryFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var productAdapter: ProductAdapter
@@ -26,13 +24,12 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-
     ): View {
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
+        val view = inflater.inflate(R.layout.fragment_view_history, container, false)
 
         (activity as AppCompatActivity).supportActionBar?.hide()
         recyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false) // Горизонтальная прокрутка
+        recyclerView.layoutManager = LinearLayoutManager(context)
         productAdapter = ProductAdapter(products) { product -> onProductClick(product) }
         recyclerView.adapter = productAdapter
 
@@ -42,7 +39,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadProducts() {
-        val db: FirebaseFirestore = Firebase.firestore
+        val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
         db.collection("products")
             .get()
@@ -56,43 +53,17 @@ class HomeFragment : Fragment() {
                 products.sortByDescending { it.views }
 
                 productAdapter.notifyDataSetChanged()
-                Log.d("HomeFragment", "Loaded ${products.size} products")
+                Log.d("ViewHistoryFragment", "Loaded ${products.size} products")
             }
             .addOnFailureListener { exception ->
-                Log.e("HomeFragment", "Error loading products", exception)
+                Log.e("ViewHistoryFragment", "Error loading products", exception)
             }
     }
 
     private fun onProductClick(product: ProductDB) {
-
-        product.views += 1
-
-
-        addToViewHistory(product)
-
-
         val bundle = Bundle().apply {
             putSerializable("product", product)
         }
-
-
         findNavController().navigate(R.id.action_navigation_home_to_productDetailFragment, bundle)
-    }
-
-    // Метод для добавления продукта в историю просмотров
-    private fun addToViewHistory(product: ProductDB) {
-        // Получаем SharedPreferences для сохранения истории
-        val sharedPreferences = requireContext().getSharedPreferences("view_history", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-
-        // Получаем текущую историю просмотров
-        val currentHistory = sharedPreferences.getStringSet("history", mutableSetOf()) ?: mutableSetOf()
-
-        // Добавляем новый продукт (ID или другой уникальный идентификатор)
-        currentHistory.add(product.id.toString()) // Предполагается, что у продукта есть уникальный ID
-
-        // Сохраняем обновленную историю
-        editor.putStringSet("history", currentHistory)
-        editor.apply()
     }
 }

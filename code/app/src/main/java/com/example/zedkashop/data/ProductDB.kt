@@ -1,8 +1,10 @@
 package com.example.zedkashop.data
 
 import java.io.Serializable
+import java.util.UUID
 
 data class ProductDB(
+    val id: String = UUID.randomUUID().toString(),
     val name: String = "",
     val price: String = "",
     val description: String = "",

@@ -13,13 +13,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.zedkashop.R
 import com.example.zedkashop.ui.base.BaseFragment
 
 class ProfileFragment : BaseFragment() {
-    private lateinit var viewModel: ProfileViewModel
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
@@ -28,46 +26,25 @@ class ProfileFragment : BaseFragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
-        // Инициализация SharedPreferences
-        sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        // Инициализация SharedPreferences и других компонентов
+        // ...
 
-        // Инициализация ViewModel
-        viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
+        // Инициализация кнопок для навигации
+        val btnPurchaseHistory: Button = view.findViewById(R.id.btnPurchaseHistory)
+        val btnViewHistory: Button = view.findViewById(R.id.btnViewHistory)
 
-        // Проверка состояния авторизации
-        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
-        if (!isLoggedIn) {
-            // Если пользователь не авторизован, переходим в AuthFragment
-            view.post {
-                view.findNavController().navigate(R.id.action_navigation_profile_to_auth_navigation)
-            }
-            return view
+        btnPurchaseHistory.setOnClickListener {
+            view.findNavController().navigate(R.id.action_navigation_profile_to_purchaseHistoryFragment)
         }
 
-        // Извлечение email пользователя из SharedPreferences
-        val userEmail = sharedPreferences.getString("userEmail", "Нет email")
-        val userEmailTextView: TextView = view.findViewById(R.id.userEmail)
-        userEmailTextView.text = userEmail // Установка email в TextView
-
-        // Инициализация кнопки и установка слушателя нажатий
-        val openDialogButton: Button = view.findViewById(R.id.addproductbutton)
-        openDialogButton.setOnClickListener {
-            showLicenseDialog()
-        }
-
-        // Обработка нажатия кнопки выхода
-        view.findViewById<ImageView>(R.id.logOut).setOnClickListener {
-            // Выход из аккаунта
-            viewModel.signOut()
-            with(sharedPreferences.edit()) {
-                remove("isLoggedIn")
-                apply()
-            }
-            view.findNavController().navigate(R.id.action_navigation_profile_to_auth_navigation)
+        btnViewHistory.setOnClickListener {
+            view.findNavController().navigate(R.id.action_navigation_profile_to_viewHistoryFragment)
         }
 
         return view
     }
+
+
 
     private fun showLicenseDialog() {
         val builder = AlertDialog.Builder(requireContext())
@@ -95,6 +72,7 @@ class ProfileFragment : BaseFragment() {
         val dialog = builder.create()
         dialog.show()
     }
+
     override fun onResume() {
         super.onResume()
         setActionBarTitle("Профиль")

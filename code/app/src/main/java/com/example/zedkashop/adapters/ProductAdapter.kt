@@ -3,8 +3,10 @@ package com.example.zedkashop.ui.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.zedkashop.R
@@ -38,6 +40,7 @@ class ProductAdapter(
         private val productName: TextView = itemView.findViewById(R.id.productName)
         private val productPrice: TextView = itemView.findViewById(R.id.productPrice)
         private val productImage: ImageView = itemView.findViewById(R.id.productImage)
+        private val addToCartButton: ImageView = itemView.findViewById(R.id.addToCartButton)
 
         fun bind(product: ProductDB) {
             productName.text = product.name
@@ -46,6 +49,16 @@ class ProductAdapter(
             Glide.with(itemView.context)
                 .load(product.imageUrl)
                 .into(productImage)
+
+            addToCartButton.setOnClickListener {
+                // Handle the add to cart action here
+                // For example, you can add the product to a cart list or show a toast
+                Toast.makeText(
+                    itemView.context,
+                    "${product.name} added to cart",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 }
