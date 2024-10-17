@@ -1,6 +1,6 @@
 # Диаграмма классов  
 
-![Диаграмма классов](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/ClassDiagram.png) 
+<img src="https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/ClassDiagram.png" alt="Добавление товара в корзину" width="800"/>
 
 # Глоссарий
 

@@ -10,25 +10,24 @@
 
 
 ### 1. Вход в аккаунт<a name="1"></a>
-
-![Вход в аккаунт](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/SignInActivityDiagram.png)
+<img src="https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/SignInActivityDiagram.png" alt="Вход в аккаунт" width="400"/>
 
 ### 2. Регистрация<a name="2"></a>
 
-![Регистрация](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/RegisterActivityDiagram.png)
-  
+<img src="https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/RegisterActivityDiagram.png" alt="Регистрация" width="400"/>
+
 ### 3. Добавление товара<a name="3"></a>
 
-![Добавление товара](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/AddProductActivityDiagram.png)
+<img src="https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/AddProductActivityDiagram.png" alt="Добавление товара" width="400"/>
 
 ### 4. Главное окно<a name="4"></a>
 
-![Добавление товара](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/HomePageActivityDiagram.png)
+<img src="https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/HomePageActivityDiagram.png" alt="Главное окно" width="400"/>
 
 ### 5. Каталог<a name="5"></a>
 
-![Добавление товара](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/CatalogActivityDiagram.png)
+<img src="https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/CatalogActivityDiagram.png" alt="Каталог" width="400"/>
 
 ### 6. Добавление товара в корзину<a name="6"></a>
 
-![Добавление товара](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/AddToCartActivityDiagram.png)
+<img src="https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/AddToCartActivityDiagram.png" alt="Добавление товара в корзину" width="400"/>
