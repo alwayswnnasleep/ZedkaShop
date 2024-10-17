@@ -21,14 +21,14 @@
 
 ![Добавление товара](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/AddProductSequenceDiagram.png)
 
-### 4. Главное окно<a name="3"></a>
+### 4. Главное окно<a name="4"></a>
 
 ![Добавление товара](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/HomePageSequenceDiagram.png)
 
-### 5. Каталог<a name="3"></a>
+### 5. Каталог<a name="5"></a>
 
 ![Добавление товара](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/CatalogSequenceDiagram.png)
 
-### 6. Добавление товара в корзину<a name="3"></a>
+### 6. Добавление товара в корзину<a name="6"></a>
 
 ![Добавление товара](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Diagrams/images/AddToCartSequenceDiagram.png)
