@@ -26,13 +26,14 @@ class ProductListFragment : Fragment(R.layout.fragment_product_list) {
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        productAdapter = ProductAdapter(productList) { product ->
+        // Передаем контекст, список продуктов и обработчик клика
+        productAdapter = ProductAdapter(requireContext(), productList, { product ->
             val bundle = Bundle().apply {
                 putSerializable("product", product) // Передаем продукт как Serializable
             }
             // Используйте навигацию
             findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment, bundle)
-        }
+        }, { /* Обработчик добавления в корзину, если нужен */ })
 
         recyclerView.adapter = productAdapter // Установите адаптер для recyclerView
         loadProducts()

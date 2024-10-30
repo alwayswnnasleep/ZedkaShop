@@ -29,13 +29,16 @@ class AuthFragment : BaseFragment() {
         val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
         if (isLoggedIn) {
             // Если пользователь уже авторизован, переходим на профиль
-            view?.findNavController()?.navigate(R.id.authFragment2)
+            // Используем requireActivity() для получения корректного контекста
+            view?.findNavController()?.navigate(R.id.action_global_navigation_profile)
         }
     }
+
     override fun onResume() {
         super.onResume()
         setActionBarTitle("Вход в аккаунт")
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,12 +80,11 @@ class AuthFragment : BaseFragment() {
         }
 
         haveAccountTextView.setOnClickListener {
-            view.findNavController().navigate(R.id.authFragment2)
+            // Переход на страницу регистрации
+            view.findNavController().navigate(R.id.action_authFragment2_to_navigation_reg)
         }
 
-        backButton.setOnClickListener {
-            view.findNavController().navigate(R.id.authFragment2)
-        }
+
 
         return view
     }
@@ -93,6 +95,5 @@ class AuthFragment : BaseFragment() {
             putBoolean("isLoggedIn", false)
             apply()
         }
-
     }
 }

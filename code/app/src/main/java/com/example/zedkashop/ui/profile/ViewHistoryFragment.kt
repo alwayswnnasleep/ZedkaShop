@@ -30,7 +30,9 @@ class ViewHistoryFragment : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.hide()
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        productAdapter = ProductAdapter(products) { product -> onProductClick(product) }
+
+        // Передаем контекст, список продуктов и обработчик клика
+        productAdapter = ProductAdapter(requireContext(), products, { product -> onProductClick(product) }, { /* Обработчик добавления в корзину можно оставить пустым, если не нужен */ })
         recyclerView.adapter = productAdapter
 
         loadProducts() // Загружаем продукты сразу

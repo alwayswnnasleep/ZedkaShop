@@ -2,10 +2,8 @@ package com.example.zedkashop.ui.product
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -39,7 +37,8 @@ class ProductCatalogFragment : Fragment(R.layout.fragment_product_list) {
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        productAdapter = ProductAdapter(productList) { product ->
+        // Передаем необходимые параметры в ProductAdapter
+        productAdapter = ProductAdapter(requireContext(), productList, { product ->
             // Логирование клика на продукт
             Log.d("ProductCatalogFragment", "Product clicked: ${product.name}")
 
@@ -50,7 +49,7 @@ class ProductCatalogFragment : Fragment(R.layout.fragment_product_list) {
 
             // Переход к детальному фрагменту с передачей данных
             findNavController().navigate(R.id.action_productCatalogFragment2_to_productDetailFragment, bundle)
-        }
+        }, { /* Обработчик добавления в корзину, если нужен */ })
 
         recyclerView.adapter = productAdapter
         loadProductsByCategory(arguments?.getString("category") ?: "")

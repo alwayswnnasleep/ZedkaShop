@@ -126,9 +126,9 @@ class AddProductFragment : BaseFragment() {
                         category = category
                     )
 
-                    // Добавление продукта в Firestore
-                    firestore.collection("products")
-                        .add(product) // Используем add вместо document() для автоматической генерации ID
+                    // Создаем новый документ с уникальным ID
+                    val productRef = firestore.collection("products").document()
+                    productRef.set(product.copy(id = productRef.id)) // Сохраняем ID продукта
                         .addOnSuccessListener {
                             Toast.makeText(requireContext(), "Продукт успешно добавлен!", Toast.LENGTH_SHORT).show()
                             clearInputs() // Очищаем поля после добавления
