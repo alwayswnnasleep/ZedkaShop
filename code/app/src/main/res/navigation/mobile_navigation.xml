@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_navigation_home_to_productDetailFragment"
             app:destination="@id/productDetailFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_searchResultsFragment"
+            app:destination="@id/searchResultsFragment" />
     </fragment>
 
     <fragment
@@ -133,5 +136,13 @@
         android:id="@+id/viewHistoryFragment"
         android:name="com.example.zedkashop.ui.history.ViewHistoryFragment"
         android:label="ViewHistoryFragment" />
+    <fragment
+        android:id="@+id/searchResultsFragment"
+        android:name="com.example.zedkashop.ui.SearchResultsFragment"
+        android:label="SearchResultsFragment" >
+        <action
+            android:id="@+id/action_searchResultsFragment_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
 
 </navigation>

@@ -25,6 +25,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     private lateinit var buyButton: Button
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val productList = mutableListOf<ProductDB>()
+    private val productQuantities = mutableMapOf<String, Int>() // Для хранения количеств продуктов
     private var totalPrice: Double = 0.0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,95 +37,84 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Передаем необходимые параметры в ProductAdapter
-        productAdapter = ProductAdapter(requireContext(), productList, { product ->
-            // Обработка клика по продукту
-            val bundle = Bundle().apply {
-                putSerializable("product", product)
-            }
-            findNavController().navigate(R.id.action_navigation_cart_to_productDetailFragment, bundle)
-        }, { /* Обработчик добавления в корзину, если нужен */ })
+        productAdapter = ProductAdapter(
+            requireContext(),
+            productList,
+            { product -> navigateToProductDetail(product) },
+            { /* Обработчик добавления в корзину не нужен в корзине */ },
+            ::onQuantityChange,
+            isInCartFragment = true
+        )
 
-        recyclerView.adapter = productAdapter // Установите адаптер для recyclerView
+        recyclerView.adapter = productAdapter
         loadCartProducts()
 
         buyButton.setOnClickListener {
-            // Логика для покупки товаров
             purchaseProducts()
         }
     }
 
+    private fun navigateToProductDetail(product: ProductDB) {
+        val bundle = Bundle().apply {
+            putSerializable("product", product)
+        }
+        findNavController().navigate(R.id.action_navigation_cart_to_productDetailFragment, bundle)
+    }
+
     private fun loadCartProducts() {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid
-        if (userId != null) {
-            // Ссылка на подколлекцию "cart" для текущего пользователя
-            val cartRef = firestore.collection("users").document(userId).collection("cart")
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val cartRef = firestore.collection("users").document(userId).collection("cart")
 
-            cartRef.get()
-                .addOnSuccessListener { snapshot ->
-                    Log.d("CartFragment", "Snapshot size: ${snapshot.size()}") // Логируем количество документов
-                    val productIds = snapshot.documents.mapNotNull { it.getString("productId") }
-                    Log.d("CartFragment", "Cart items: $productIds")
-                    productList.clear()
-                    totalPrice = 0.0
+        cartRef.get().addOnSuccessListener { snapshot ->
+            if (snapshot.isEmpty) {
+                totalPriceTextView.text = "Корзина пуста"
+                return@addOnSuccessListener
+            }
 
-                    if (productIds.isEmpty()) {
-                        totalPriceTextView.text = "Корзина пуста"
-                    } else {
-                        for (productId in productIds) {
-                            firestore.collection("products").document(productId)
-                                .get()
-                                .addOnSuccessListener { productDoc ->
-                                    val product = productDoc.toObject(ProductDB::class.java)
-                                    if (product != null) {
-                                        productList.add(product)
+            totalPrice = 0.0
+            productList.clear()
+            productQuantities.clear() // Очистка количеств
 
-                                        // Преобразуем строку в число
-                                        val productPrice = product.price.toDoubleOrNull() ?: 0.0
-                                        totalPrice += productPrice
-
-                                        Log.d("CartFragment", "Добавлен продукт: ${product.name}, цена: ${product.price}")
-                                    } else {
-                                        Log.e("CartFragment", "Продукт не найден для ID: $productId")
-                                    }
-
-                                    // Обновляем адаптер и текст общей стоимости
-                                    productAdapter.notifyDataSetChanged()
-                                    totalPriceTextView.text = "Общая стоимость: $totalPrice"
-                                    firestore.collection("products").document(productId)
-                                        .get()
-                                        .addOnSuccessListener { productDoc ->
-                                            if (productDoc.exists()) {
-                                                val product = productDoc.toObject(ProductDB::class.java)
-                                                if (product != null) {
-                                                    productList.add(product)
-                                                    // Обновление UI
-                                                }
-                                            } else {
-                                                Log.e("CartFragment", "Продукт с ID $productId не существует в коллекции products")
-                                            }
-                                        }
-                                        .addOnFailureListener { e ->
-                                            Log.e("CartFragment", "Ошибка при загрузке продукта: $e")
-                                        }
-                                }
-                                .addOnFailureListener { e ->
-                                    Log.e("CartFragment", "Ошибка при загрузке продукта: $e")
-                                }
-                        }
-                    }
-                }
-                .addOnFailureListener { e ->
-                    Log.e("CartFragment", "Ошибка при загрузке корзины: $e")
-                }
-        } else {
-            Log.e("CartFragment", "Пользователь не авторизован")
+            val productIds = snapshot.documents.mapNotNull { it.getString("productId") }
+            loadProducts(productIds)
+        }.addOnFailureListener { e ->
+            Log.e("CartFragment", "Ошибка при загрузке корзины: $e")
         }
     }
 
+    private fun loadProducts(productIds: List<String>) {
+        productIds.forEach { productId ->
+            firestore.collection("products").document(productId).get()
+                .addOnSuccessListener { productDoc ->
+                    val product = productDoc.toObject(ProductDB::class.java)
+                    product?.let {
+                        productList.add(it)
+                        // Получение количества из корзины
+                        val quantity = productQuantities[product.id] ?: 1 // По умолчанию 1
+                        productQuantities[product.id] = quantity // Сохранение количества
+
+                        // Обновляем общую стоимость
+                        totalPrice += (it.price.toDoubleOrNull() ?: 0.0) * quantity
+                        totalPriceTextView.text = "Общая стоимость: $totalPrice"
+                        productAdapter.notifyDataSetChanged()
+                    } ?: Log.e("CartFragment", "Продукт не найден для ID: $productId")
+                }.addOnFailureListener { e ->
+                    Log.e("CartFragment", "Ошибка при загрузке продукта: $e")
+                }
+        }
+    }
+
+    private fun onQuantityChange(product: ProductDB, newQuantity: Int) {
+        // Обновляем количество и пересчитываем общую стоимость
+        productQuantities[product.id] = newQuantity
+        totalPrice = productList.sumOf { product ->
+            (product.price.toDoubleOrNull() ?: 0.0) * (productQuantities[product.id] ?: 1)
+        }
+        totalPriceTextView.text = "Общая стоимость: $totalPrice"
+    }
+
     private fun purchaseProducts() {
-        // Логика для обработки покупки
         Log.d("CartFragment", "Покупка товаров: $totalPrice")
-        // Здесь можно добавить логику для создания заказа, очистки корзины и т. д.
+        // Логика для обработки покупки
     }
 }
