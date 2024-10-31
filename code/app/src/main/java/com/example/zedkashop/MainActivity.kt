@@ -36,6 +36,19 @@ class MainActivity : AppCompatActivity() {
         // Настройка Action Bar с NavController
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
+
+        // Слушатель навигации для управления отображением стрелки назад
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            // Показываем кнопку "Назад" только для определенных фрагментов
+            when (destination.id) {
+                R.id.productDetailFragment -> {
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true) // Показываем стрелку назад
+                }
+                else -> {
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false) // Скрываем стрелку назад
+                }
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
