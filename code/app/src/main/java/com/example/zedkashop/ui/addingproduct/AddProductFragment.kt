@@ -60,14 +60,15 @@ class AddProductFragment : Fragment() {
         addButton.setOnClickListener {
             // Логика добавления продукта
             val productName = enterName.text.toString()
-            val productPrice = enterPrice.text.toString()
+            val productPrice = enterPrice.text.toString().trim() // Убедитесь, что пробелы удалены
             val productDescription = enterDescription.text.toString()
             val selectedConsumer = chooseManufacturer.selectedItem.toString()
             val selectedCategory = chooseCategory.selectedItem.toString()
 
             // Проверка, что все поля заполнены и изображение выбрано
             if (productName.isNotEmpty() && productPrice.isNotEmpty() && productDescription.isNotEmpty() && selectedImageUri != null) {
-                uploadImageToFirebase(selectedImageUri!!, selectedCategory, productName, productPrice, productDescription, selectedConsumer) // Используем !! для безопасного извлечения
+                val formattedPrice = "$productPrice ₽" // Добавляем символ рубля
+                uploadImageToFirebase(selectedImageUri!!, selectedCategory, productName, formattedPrice, productDescription, selectedConsumer)
             } else {
                 // Обработка случая, если поля не заполнены
                 Toast.makeText(requireContext(), "Пожалуйста, заполните все поля и выберите изображение.", Toast.LENGTH_SHORT).show()
@@ -88,7 +89,7 @@ class AddProductFragment : Fragment() {
         chooseManufacturer.adapter = manufacturerAdapter
 
         // Настройка Spinner для категорий
-        val categories = arrayOf("Шлем", "Жилет", "Одежда", "Разгрузочная система", "Подсумок", "Обувь")
+        val categories = arrayOf("Шлем", "Бронежилет", "Одежда", "Разгрузочная система", "Подсумок", "Обувь")
         val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         val chooseCategory: Spinner = view.findViewById(R.id.chooseCategory)
