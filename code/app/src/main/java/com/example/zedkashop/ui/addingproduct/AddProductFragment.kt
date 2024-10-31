@@ -21,18 +21,19 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.example.zedkashop.R
 import com.example.zedkashop.data.ProductDB
-import com.example.zedkashop.ui.base.BaseFragment
 import java.util.UUID
 
-class AddProductFragment : BaseFragment() {
+class AddProductFragment : Fragment() {
     private lateinit var firestore: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
     private var selectedImageUri: Uri? = null // Изменен тип на Uri? для допуска значения null
     private lateinit var placePhoto: ImageView
     private lateinit var view: View // Добавляем переменную для хранения ссылки на представление
-    override fun onResume() {
-        super.onResume()
-        setActionBarTitle("Добавление товара") // Устанавливаем заголовок
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.show()
+        // Установка заголовка тулбара
+        (activity as AppCompatActivity).supportActionBar?.title = "Добавление товара"
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

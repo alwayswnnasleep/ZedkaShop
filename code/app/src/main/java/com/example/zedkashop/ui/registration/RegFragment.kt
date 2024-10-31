@@ -9,21 +9,22 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.zedkashop.R
-import com.example.zedkashop.ui.base.BaseFragment
 import com.example.zedkashop.ui.login.RegViewModel
 
-class RegFragment : BaseFragment() {
+class RegFragment : Fragment() {
     private lateinit var viewModel: RegViewModel
 
-    override fun onResume() {
-        super.onResume()
-        setActionBarTitle("Создание аккаунта") // Устанавливаем заголовок
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.show()
+        // Установка заголовка тулбара
+        (activity as AppCompatActivity).supportActionBar?.title = "Регистрация" // или другой заголовок
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

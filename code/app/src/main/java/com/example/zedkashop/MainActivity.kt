@@ -1,7 +1,5 @@
 package com.example.zedkashop
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
@@ -16,17 +14,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         setTheme(R.style.Theme_ZedkaShop)
-
-
         super.onCreate(savedInstanceState)
-        val fs = Firebase.firestore
-        fs.collection("tovari")
-            .document().set(mapOf("name" to "Helmet"))
 
-             binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Инициализация тулбара
+        val toolbar: androidx.appcompat.widget.Toolbar = binding.toolbar
+        setSupportActionBar(toolbar)
 
         val navView: BottomNavigationView = binding.navView
 
@@ -38,9 +34,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
-
     }
 }

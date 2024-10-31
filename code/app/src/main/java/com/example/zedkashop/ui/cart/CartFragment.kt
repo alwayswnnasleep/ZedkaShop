@@ -1,5 +1,11 @@
 package com.example.zedkashop.ui.cart
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,8 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zedkashop.R
@@ -25,18 +34,19 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     private lateinit var buyButton: Button
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val productList = mutableListOf<ProductDB>()
-    private val productQuantities = mutableMapOf<String, Int>() // Для хранения количеств продуктов
+    private val productQuantities = mutableMapOf<String, Int>()
     private var totalPrice: Double = 0.0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.show()
+        (activity as AppCompatActivity).supportActionBar?.title = "Корзина" // или другой заголовок
 
         recyclerView = view.findViewById(R.id.recyclerView)
         totalPriceTextView = view.findViewById(R.id.totalPriceTextView)
         buyButton = view.findViewById(R.id.buyButton)
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
         productAdapter = ProductAdapter(
             requireContext(),
             productList,
@@ -52,6 +62,8 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         buyButton.setOnClickListener {
             purchaseProducts()
         }
+
+        setupSwipeToDelete()
     }
 
     private fun navigateToProductDetail(product: ProductDB) {
@@ -73,7 +85,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
             totalPrice = 0.0
             productList.clear()
-            productQuantities.clear() // Очистка количеств
+            productQuantities.clear()
 
             val productIds = snapshot.documents.mapNotNull { it.getString("productId") }
             loadProducts(productIds)
@@ -89,11 +101,8 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                     val product = productDoc.toObject(ProductDB::class.java)
                     product?.let {
                         productList.add(it)
-                        // Получение количества из корзины
-                        val quantity = productQuantities[product.id] ?: 1 // По умолчанию 1
-                        productQuantities[product.id] = quantity // Сохранение количества
-
-                        // Обновляем общую стоимость
+                        val quantity = productQuantities[product.id] ?: 1
+                        productQuantities[product.id] = quantity
                         totalPrice += (it.price.toDoubleOrNull() ?: 0.0) * quantity
                         totalPriceTextView.text = "Общая стоимость: $totalPrice"
                         productAdapter.notifyDataSetChanged()
@@ -105,7 +114,6 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     }
 
     private fun onQuantityChange(product: ProductDB, newQuantity: Int) {
-        // Обновляем количество и пересчитываем общую стоимость
         productQuantities[product.id] = newQuantity
         totalPrice = productList.sumOf { product ->
             (product.price.toDoubleOrNull() ?: 0.0) * (productQuantities[product.id] ?: 1)
@@ -117,4 +125,98 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         Log.d("CartFragment", "Покупка товаров: $totalPrice")
         // Логика для обработки покупки
     }
+
+    private fun setupSwipeToDelete() {
+        val itemTouchHelper = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val product = productList[position]
+                removeProductFromCart(product, position)
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                if (dX < 0) { // Свайп влево
+                    val itemView = viewHolder.itemView
+                    val background = ColorDrawable(Color.RED)
+                    background.setBounds(
+                        itemView.right + dX.toInt(),
+                        itemView.top,
+                        itemView.right,
+                        itemView.bottom
+                    )
+                    background.draw(c)
+
+                    val originalIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete)
+                    val iconWidth = (originalIcon?.intrinsicWidth ?: 0) / 3 // Уменьшаем ещё
+                    val iconHeight = (originalIcon?.intrinsicHeight ?: 0) / 3 // Уменьшаем ещё
+                    val resizedIcon = Bitmap.createScaledBitmap(
+                        originalIcon?.toBitmap() ?: Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888),
+                        iconWidth,
+                        iconHeight,
+                        false
+                    )
+
+                    val iconMargin = (itemView.height - resizedIcon.height) / 2
+                    val iconTop = itemView.top + iconMargin
+                    val iconBottom = iconTop + resizedIcon.height
+                    val iconLeft = itemView.right - resizedIcon.width - iconMargin - 20 // Сдвигаем левее
+                    val iconRight = itemView.right - iconMargin - 20 // Сдвигаем левее
+
+                    c.drawBitmap(resizedIcon, iconLeft.toFloat(), iconTop.toFloat(), null)
+                }
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            }
+        }
+
+        ItemTouchHelper(itemTouchHelper).attachToRecyclerView(recyclerView)
+    }
+
+    private fun removeProductFromCart(product: ProductDB, position: Int) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val cartRef = firestore.collection("users").document(userId).collection("cart").document(product.id)
+
+        cartRef.delete().addOnSuccessListener {
+            productList.removeAt(position)
+            productAdapter.notifyItemRemoved(position)
+            updateTotalPrice()
+        }.addOnFailureListener { e ->
+            Log.e("CartFragment", "Ошибка при удалении товара: $e")
+        }
+    }
+
+    private fun updateTotalPrice() {
+        totalPrice = productList.sumOf { product ->
+            (product.price.toDoubleOrNull() ?: 0.0) * (productQuantities[product.id] ?: 1)
+        }
+        totalPriceTextView.text = "Общая стоимость: $totalPrice"
+    }
+}
+
+// Расширение для конвертации Drawable в Bitmap
+fun Drawable.toBitmap(): Bitmap {
+    if (this is BitmapDrawable) {
+        return this.bitmap
+    }
+    val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bitmap)
+    setBounds(0, 0, canvas.width, canvas.height)
+    draw(canvas)
+    return bitmap
 }

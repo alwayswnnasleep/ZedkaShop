@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -29,17 +31,23 @@ class HomeFragment : Fragment() {
     private lateinit var searchEditText: EditText
     private val products = mutableListOf<ProductDB>()
     private val filteredProducts = mutableListOf<ProductDB>()
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-
-        (activity as AppCompatActivity).supportActionBar?.hide()
         recyclerView = view.findViewById(R.id.recyclerView)
         searchEditText = view.findViewById(R.id.searchEditText)
-
+        (activity as AppCompatActivity).supportActionBar?.hide()
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         productAdapter = ProductAdapter(requireContext(), filteredProducts,
@@ -49,6 +57,17 @@ class HomeFragment : Fragment() {
         recyclerView.adapter = productAdapter
 
         loadProducts() // Загружаем продукты сразу
+
+        // Фильтрация продуктов по тексту в поле поиска
+        searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                filterProducts(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
 
         return view
     }
@@ -73,6 +92,20 @@ class HomeFragment : Fragment() {
             .addOnFailureListener { exception ->
                 Toast.makeText(context, "Ошибка загрузки продуктов", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun filterProducts(query: String) {
+        filteredProducts.clear()
+        if (query.isEmpty()) {
+            filteredProducts.addAll(products)
+        } else {
+            for (product in products) {
+                if (product.name.contains(query, ignoreCase = true)) {
+                    filteredProducts.add(product)
+                }
+            }
+        }
+        productAdapter.notifyDataSetChanged()
     }
 
     private fun onProductClick(product: ProductDB) {

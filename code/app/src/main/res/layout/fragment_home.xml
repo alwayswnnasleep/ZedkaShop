@@ -9,6 +9,8 @@
     tools:context=".ui.home.HomeFragment"
     android:orientation="vertical">
 
+
+
     <!-- Верхний бар -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,6 +36,8 @@
             android:padding="8dp" />
 
     </LinearLayout>
+
+
 
     <ImageView
         android:id="@+id/imageView"
