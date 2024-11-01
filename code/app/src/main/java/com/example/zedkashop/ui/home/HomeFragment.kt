@@ -57,9 +57,7 @@ class HomeFragment : Fragment() {
         )
         recyclerView.adapter = productAdapter
 
-        loadProducts() // Загружаем продукты сразу
-
-        // Фильтрация продуктов по тексту в поле поиска
+        loadProducts()
         searchEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 

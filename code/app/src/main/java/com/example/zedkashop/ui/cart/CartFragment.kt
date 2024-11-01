@@ -81,7 +81,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         cartRef.get().addOnSuccessListener { snapshot ->
             if (snapshot.isEmpty) {
                 totalPriceTextView.text = "Корзина пуста"
-                buyButton.text = "Купить" // Сброс текста кнопки
+                buyButton.text = "Купить"
                 return@addOnSuccessListener
             }
 
@@ -89,30 +89,30 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             productList.clear()
             productQuantities.clear()
 
-            val productIds = snapshot.documents.mapNotNull { it.getString("productId") }
-            loadProducts(productIds)
+            snapshot.documents.forEach { document ->
+                val productId = document.getString("productId") ?: return@forEach
+                val quantity = document.getDouble("quantity")?.toInt() ?: 1 // Изменение здесь
+                loadProduct(productId, quantity)
+            }
         }.addOnFailureListener { e ->
             Log.e("CartFragment", "Ошибка при загрузке корзины: $e")
         }
     }
 
-    private fun loadProducts(productIds: List<String>) {
-        productIds.forEach { productId ->
-            firestore.collection("products").document(productId).get()
-                .addOnSuccessListener { productDoc ->
-                    val product = productDoc.toObject(ProductDB::class.java)
-                    product?.let {
-                        productList.add(it)
-                        val quantity = productQuantities[product.id] ?: 1
-                        productQuantities[product.id] = quantity
-                        totalPrice += (parsePrice(it.price) ?: 0.0) * quantity
-                        updateTotalPriceDisplay()
-                        productAdapter.notifyDataSetChanged()
-                    } ?: Log.e("CartFragment", "Продукт не найден для ID: $productId")
-                }.addOnFailureListener { e ->
-                    Log.e("CartFragment", "Ошибка при загрузке продукта: $e")
-                }
-        }
+    private fun loadProduct(productId: String, quantity: Int) {
+        firestore.collection("products").document(productId).get()
+            .addOnSuccessListener { productDoc ->
+                val product = productDoc.toObject(ProductDB::class.java)
+                product?.let {
+                    productList.add(it)
+                    productQuantities[product.id] = quantity // Сохраняем количество
+                    totalPrice += (parsePrice(it.price) ?: 0.0) * quantity
+                    updateTotalPriceDisplay()
+                    productAdapter.notifyDataSetChanged()
+                } ?: Log.e("CartFragment", "Продукт не найден для ID: $productId")
+            }.addOnFailureListener { e ->
+                Log.e("CartFragment", "Ошибка при загрузке продукта: $e")
+            }
     }
 
     private fun parsePrice(price: String): Double? {
@@ -122,6 +122,20 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     private fun onQuantityChange(product: ProductDB, newQuantity: Int) {
         productQuantities[product.id] = newQuantity
         updateTotalPrice()
+        updateProductQuantityInDatabase(product.id, newQuantity)
+    }
+
+    private fun updateProductQuantityInDatabase(productId: String, newQuantity: Int) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val cartRef = firestore.collection("users").document(userId).collection("cart").document(productId)
+
+        cartRef.update("quantity", newQuantity)
+            .addOnSuccessListener {
+                Log.d("CartFragment", "Количество продукта обновлено в базе данных: $productId")
+            }
+            .addOnFailureListener { e ->
+                Log.e("CartFragment", "Ошибка при обновлении количества продукта: $e")
+            }
     }
 
     private fun updateTotalPrice() {

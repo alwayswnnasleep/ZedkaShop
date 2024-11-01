@@ -9,6 +9,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -26,20 +27,21 @@ import java.util.UUID
 class AddProductFragment : Fragment() {
     private lateinit var firestore: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
-    private var selectedImageUri: Uri? = null // Изменен тип на Uri? для допуска значения null
+    private var selectedImageUri: Uri? = null
     private lateinit var placePhoto: ImageView
-    private lateinit var view: View // Добавляем переменную для хранения ссылки на представление
+    private lateinit var view: View
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.show()
-        // Установка заголовка тулбара
         (activity as AppCompatActivity).supportActionBar?.title = "Добавление товара"
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        view = inflater.inflate(R.layout.fragment_add_product, container, false) // Инициализация представления
+        view = inflater.inflate(R.layout.fragment_add_product, container, false)
 
         firestore = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance()
@@ -52,25 +54,21 @@ class AddProductFragment : Fragment() {
         val chooseCategory: Spinner = view.findViewById(R.id.chooseCategory)
         val addButton: Button = view.findViewById(R.id.addProduct)
 
-        // Установка клика на placePhoto для открытия галереи
         placePhoto.setOnClickListener {
             openGallery()
         }
 
         addButton.setOnClickListener {
-            // Логика добавления продукта
             val productName = enterName.text.toString()
-            val productPrice = enterPrice.text.toString().trim() // Убедитесь, что пробелы удалены
+            val productPrice = enterPrice.text.toString().trim()
             val productDescription = enterDescription.text.toString()
             val selectedConsumer = chooseManufacturer.selectedItem.toString()
             val selectedCategory = chooseCategory.selectedItem.toString()
 
-            // Проверка, что все поля заполнены и изображение выбрано
             if (productName.isNotEmpty() && productPrice.isNotEmpty() && productDescription.isNotEmpty() && selectedImageUri != null) {
-                val formattedPrice = "$productPrice ₽" // Добавляем символ рубля
+                val formattedPrice = "$productPrice ₽"
                 uploadImageToFirebase(selectedImageUri!!, selectedCategory, productName, formattedPrice, productDescription, selectedConsumer)
             } else {
-                // Обработка случая, если поля не заполнены
                 Toast.makeText(requireContext(), "Пожалуйста, заполните все поля и выберите изображение.", Toast.LENGTH_SHORT).show()
             }
         }
@@ -81,19 +79,38 @@ class AddProductFragment : Fragment() {
     }
 
     private fun setupSpinners() {
-        // Настройка Spinner для производителей
-        val manufacturers = arrayOf("ZedkaShop", "Lowa", "Mil-Tec")
-        val manufacturerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, manufacturers)
-        manufacturerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        val chooseManufacturer: Spinner = view.findViewById(R.id.chooseManufacturer)
-        chooseManufacturer.adapter = manufacturerAdapter
-
-        // Настройка Spinner для категорий
         val categories = arrayOf("Шлем", "Бронежилет", "Одежда", "Разгрузочная система", "Подсумок", "Обувь")
         val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         val chooseCategory: Spinner = view.findViewById(R.id.chooseCategory)
         chooseCategory.adapter = categoryAdapter
+
+        // Настройка Spinner для производителей
+        val manufacturersMap = mapOf(
+            "Шлем" to arrayOf("FAST", "Omnitek"),
+            "Бронежилет" to arrayOf("РусАрм"),
+            "Одежда" to arrayOf("EmersonGear", "PROPPER BDU", "Yakeda"),
+            "Разгрузочная система" to arrayOf("Модель 1", "Модель 2"),
+            "Подсумок" to arrayOf("Модель A", "Модель B"),
+            "Обувь" to arrayOf("Lowa", "Salomon")
+        )
+
+        val chooseManufacturer: Spinner = view.findViewById(R.id.chooseManufacturer)
+
+        // Устанавливаем слушатель для выбора категории
+        chooseCategory.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                val selectedCategory = categories[position]
+                val manufacturers = manufacturersMap[selectedCategory] ?: emptyArray()
+                val manufacturerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, manufacturers)
+                manufacturerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                chooseManufacturer.adapter = manufacturerAdapter
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Ничего не делаем
+            }
+        })
     }
 
     private fun openGallery() {
@@ -104,10 +121,9 @@ class AddProductFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_PICK_CODE && resultCode == AppCompatActivity.RESULT_OK && data != null) {
-            selectedImageUri = data.data // Получаем Uri выбранного изображения
-            placePhoto.setImageURI(selectedImageUri) // Отображаем изображение в ImageView
+            selectedImageUri = data.data
+            placePhoto.setImageURI(selectedImageUri)
         } else {
-            // Обработка случая, если изображение не выбрано
             Toast.makeText(requireContext(), "Ошибка выбора изображения", Toast.LENGTH_SHORT).show()
         }
     }
@@ -128,12 +144,11 @@ class AddProductFragment : Fragment() {
                         category = category
                     )
 
-                    // Создаем новый документ с уникальным ID
                     val productRef = firestore.collection("products").document()
-                    productRef.set(product.copy(id = productRef.id)) // Сохраняем ID продукта
+                    productRef.set(product.copy(id = productRef.id))
                         .addOnSuccessListener {
                             Toast.makeText(requireContext(), "Продукт успешно добавлен!", Toast.LENGTH_SHORT).show()
-                            clearInputs() // Очищаем поля после добавления
+                            clearInputs()
                         }
                         .addOnFailureListener { e ->
                             Toast.makeText(requireContext(), "Ошибка добавления продукта: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -146,12 +161,11 @@ class AddProductFragment : Fragment() {
     }
 
     private fun clearInputs() {
-        // Очищаем поля ввода и изображение
         view.findViewById<EditText>(R.id.enterName).text.clear()
         view.findViewById<EditText>(R.id.enterPrice).text.clear()
         view.findViewById<EditText>(R.id.enterDescription).text.clear()
-        placePhoto.setImageURI(null) // Сброс изображения
-        selectedImageUri = null // Обнуляем URI
+        placePhoto.setImageURI(null)
+        selectedImageUri = null
     }
 
     companion object {

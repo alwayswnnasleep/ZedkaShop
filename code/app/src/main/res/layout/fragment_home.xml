@@ -10,8 +10,6 @@
     android:orientation="vertical">
 
 
-
-    <!-- Верхний бар -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,16 +45,7 @@
         android:src="@drawable/promo"
         android:adjustViewBounds="true" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="Больше просмотров"
-        android:textSize="30sp"
-        android:textStyle="bold" />
-
-    <HorizontalScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -65,6 +54,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal" />
-    </HorizontalScrollView>
+    </ScrollView>
 
 </LinearLayout>
