@@ -1,4 +1,4 @@
-package com.example.zedkashop.data
-
-class BrandDB {
-}
+data class BrandDB(
+    val name: String ="",
+    val imageUrl: String=""
+)
