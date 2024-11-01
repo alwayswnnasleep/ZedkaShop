@@ -17,8 +17,9 @@ class ProductAdapter(
     private val products: List<ProductDB>,
     private val onProductClick: (ProductDB) -> Unit,
     private val onAddToCartClick: (ProductDB) -> Unit,
-    private val onQuantityChange: ((ProductDB, Int) -> Unit)? = null, // Для корзины
-    private val isInCartFragment: Boolean = false // Новый параметр
+    private val onQuantityChange: ((ProductDB, Int) -> Unit)? = null,
+    private val productQuantities: Map<String, Int> = emptyMap(), // Pass the map of quantities
+    private val isInCartFragment: Boolean = false
 ) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
     companion object {
@@ -37,11 +38,11 @@ class ProductAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return if (viewType == VIEW_TYPE_CART) {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_product_cart, parent, false) // Разметка для корзины
+                .inflate(R.layout.item_product_cart, parent, false)
             CartViewHolder(view)
         } else {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_product, parent, false) // Стандартная разметка
+                .inflate(R.layout.item_product, parent, false)
             ProductViewHolder(view)
         }
     }
@@ -51,19 +52,29 @@ class ProductAdapter(
         holder.bind(product)
 
         if (holder is CartViewHolder && onQuantityChange != null) {
+            val initialQuantity = productQuantities[product.id] ?: 1 // Get the initial quantity from map
+            holder.quantityCounter.text = initialQuantity.toString() // Set the correct initial quantity
+
             holder.buttonDecrease.setOnClickListener {
                 val currentQuantity = holder.quantityCounter.text.toString().toInt()
                 if (currentQuantity > 1) {
-                    holder.quantityCounter.text = (currentQuantity - 1).toString()
-                    onQuantityChange.invoke(product, currentQuantity - 1) // Используем безопасный вызов
+                    val newQuantity = currentQuantity - 1
+                    holder.quantityCounter.text = newQuantity.toString()
+                    onQuantityChange.invoke(product, newQuantity)
+                    updateButtonStates(holder, newQuantity)
                 }
             }
 
             holder.buttonIncrease.setOnClickListener {
                 val currentQuantity = holder.quantityCounter.text.toString().toInt()
-                holder.quantityCounter.text = (currentQuantity + 1).toString()
-                onQuantityChange.invoke(product, currentQuantity + 1) // Используем безопасный вызов
+                val newQuantity = currentQuantity + 1
+                holder.quantityCounter.text = newQuantity.toString()
+                onQuantityChange.invoke(product, newQuantity)
+                updateButtonStates(holder, newQuantity)
             }
+
+            // Initialize button states
+            updateButtonStates(holder, initialQuantity)
         }
 
         holder.itemView.setOnClickListener {
@@ -72,9 +83,13 @@ class ProductAdapter(
 
         if (holder is ProductViewHolder) {
             holder.addToCartButton.setOnClickListener {
-                onAddToCartClick(product) // Добавление товара в корзину
+                onAddToCartClick(product)
             }
         }
+    }
+
+    private fun updateButtonStates(holder: CartViewHolder, quantity: Int) {
+        holder.buttonDecrease.isEnabled = quantity > 1
     }
 
     override fun getItemCount(): Int {
@@ -112,7 +127,6 @@ class ProductAdapter(
         override fun bind(product: ProductDB) {
             productName.text = product.name
             productPrice.text = product.price
-            quantityCounter.text = "1" // Изначально устанавливаем 1
 
             Glide.with(itemView.context)
                 .load(product.imageUrl)

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.zedkashop.R
 import com.example.zedkashop.data.ProductDB
 import com.example.zedkashop.ui.home.ProductAdapter
+import com.example.zedkashop.ui.cart.CartManager
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ProductCatalogFragment : Fragment(R.layout.fragment_product_list) {
@@ -38,18 +39,21 @@ class ProductCatalogFragment : Fragment(R.layout.fragment_product_list) {
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
         // Передаем необходимые параметры в ProductAdapter
-        productAdapter = ProductAdapter(requireContext(), productList, { product ->
-            // Логирование клика на продукт
-            Log.d("ProductCatalogFragment", "Product clicked: ${product.name}")
+        productAdapter = ProductAdapter(requireContext(), productList,
+            { product ->
+                // Логирование клика на продукт
+                Log.d("ProductCatalogFragment", "Product clicked: ${product.name}")
 
-            // Создание Bundle для передачи данных о продукте
-            val bundle = Bundle().apply {
-                putSerializable("product", product) // Передаем продукт как Serializable
-            }
+                // Создание Bundle для передачи данных о продукте
+                val bundle = Bundle().apply {
+                    putSerializable("product", product) // Передаем продукт как Serializable
+                }
 
-            // Переход к детальному фрагменту с передачей данных
-            findNavController().navigate(R.id.action_productCatalogFragment2_to_productDetailFragment, bundle)
-        }, { /* Обработчик добавления в корзину, если нужен */ })
+                // Переход к детальному фрагменту с передачей данных
+                findNavController().navigate(R.id.action_productCatalogFragment2_to_productDetailFragment, bundle)
+            },
+            { product -> addToCart(product) } // Обработчик добавления в корзину
+        )
 
         recyclerView.adapter = productAdapter
         loadProductsByCategory(arguments?.getString("category") ?: "")
@@ -70,6 +74,10 @@ class ProductCatalogFragment : Fragment(R.layout.fragment_product_list) {
             .addOnFailureListener { e ->
                 e.printStackTrace()
             }
+    }
+
+    private fun addToCart(product: ProductDB) {
+        CartManager.addToCart(requireContext(), product)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zedkashop.R
 import com.example.zedkashop.data.ProductDB
+import com.example.zedkashop.ui.cart.CartManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -131,38 +132,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun addToCart(product: ProductDB) {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: run {
-            Toast.makeText(context, "Пожалуйста, войдите в систему", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val cartRef = FirebaseFirestore.getInstance()
-            .collection("users")
-            .document(userId)
-            .collection("cart")
-            .document(product.id)
-
-        cartRef.get().addOnSuccessListener { document ->
-            if (document.exists()) {
-                val currentQuantity = document.getLong("quantity") ?: 0
-                cartRef.update("quantity", currentQuantity + 1)
-                    .addOnSuccessListener {
-                        Toast.makeText(context, "Количество товара обновлено", Toast.LENGTH_SHORT).show()
-                    }
-                    .addOnFailureListener { e ->
-                        Log.e("HomeFragment", "Ошибка при обновлении количества в корзине", e)
-                    }
-            } else {
-                cartRef.set(mapOf("productId" to product.id, "quantity" to 1))
-                    .addOnSuccessListener {
-                        Toast.makeText(context, "Товар добавлен в корзину", Toast.LENGTH_SHORT).show()
-                    }
-                    .addOnFailureListener { e ->
-                        Log.e("HomeFragment", "Ошибка при добавлении в корзину", e)
-                    }
-            }
-        }.addOnFailureListener { e ->
-            Log.e("HomeFragment", "Ошибка при проверке наличия в корзине", e)
-        }
+        CartManager.addToCart(requireContext(), product)
     }
 }

@@ -40,8 +40,9 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.title = "Корзина" // или другой заголовок
+        (activity as AppCompatActivity).supportActionBar?.title = "Корзина"
 
+        // Инициализация элементов интерфейса
         recyclerView = view.findViewById(R.id.recyclerView)
         totalPriceTextView = view.findViewById(R.id.totalPriceTextView)
         buyButton = view.findViewById(R.id.buyButton)
@@ -80,6 +81,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         cartRef.get().addOnSuccessListener { snapshot ->
             if (snapshot.isEmpty) {
                 totalPriceTextView.text = "Корзина пуста"
+                buyButton.text = "Купить" // Сброс текста кнопки
                 return@addOnSuccessListener
             }
 
@@ -103,8 +105,8 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                         productList.add(it)
                         val quantity = productQuantities[product.id] ?: 1
                         productQuantities[product.id] = quantity
-                        totalPrice += (it.price.toDoubleOrNull() ?: 0.0) * quantity
-                        totalPriceTextView.text = "Общая стоимость: $totalPrice"
+                        totalPrice += (parsePrice(it.price) ?: 0.0) * quantity
+                        updateTotalPriceDisplay()
                         productAdapter.notifyDataSetChanged()
                     } ?: Log.e("CartFragment", "Продукт не найден для ID: $productId")
                 }.addOnFailureListener { e ->
@@ -113,12 +115,25 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         }
     }
 
+    private fun parsePrice(price: String): Double? {
+        return price.replace("₽", "").replace(",", ".").trim().toDoubleOrNull()
+    }
+
     private fun onQuantityChange(product: ProductDB, newQuantity: Int) {
         productQuantities[product.id] = newQuantity
+        updateTotalPrice()
+    }
+
+    private fun updateTotalPrice() {
         totalPrice = productList.sumOf { product ->
-            (product.price.toDoubleOrNull() ?: 0.0) * (productQuantities[product.id] ?: 1)
+            (parsePrice(product.price) ?: 0.0) * (productQuantities[product.id] ?: 1)
         }
-        totalPriceTextView.text = "Общая стоимость: $totalPrice"
+        updateTotalPriceDisplay()
+    }
+
+    private fun updateTotalPriceDisplay() {
+        totalPriceTextView.text = "Общая стоимость: ${totalPrice} ₽"
+        buyButton.text = "Купить за ${totalPrice} ₽" // Обновляем текст кнопки
     }
 
     private fun purchaseProducts() {
@@ -163,8 +178,8 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                     background.draw(c)
 
                     val originalIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete)
-                    val iconWidth = (originalIcon?.intrinsicWidth ?: 0) / 3 // Уменьшаем ещё
-                    val iconHeight = (originalIcon?.intrinsicHeight ?: 0) / 3 // Уменьшаем ещё
+                    val iconWidth = (originalIcon?.intrinsicWidth ?: 0) / 3
+                    val iconHeight = (originalIcon?.intrinsicHeight ?: 0) / 3
                     val resizedIcon = Bitmap.createScaledBitmap(
                         originalIcon?.toBitmap() ?: Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888),
                         iconWidth,
@@ -175,8 +190,8 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                     val iconMargin = (itemView.height - resizedIcon.height) / 2
                     val iconTop = itemView.top + iconMargin
                     val iconBottom = iconTop + resizedIcon.height
-                    val iconLeft = itemView.right - resizedIcon.width - iconMargin - 20 // Сдвигаем левее
-                    val iconRight = itemView.right - iconMargin - 20 // Сдвигаем левее
+                    val iconLeft = itemView.right - resizedIcon.width - iconMargin - 20
+                    val iconRight = itemView.right - iconMargin - 20
 
                     c.drawBitmap(resizedIcon, iconLeft.toFloat(), iconTop.toFloat(), null)
                 }
@@ -199,13 +214,6 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         }.addOnFailureListener { e ->
             Log.e("CartFragment", "Ошибка при удалении товара: $e")
         }
-    }
-
-    private fun updateTotalPrice() {
-        totalPrice = productList.sumOf { product ->
-            (product.price.toDoubleOrNull() ?: 0.0) * (productQuantities[product.id] ?: 1)
-        }
-        totalPriceTextView.text = "Общая стоимость: $totalPrice"
     }
 }
 
