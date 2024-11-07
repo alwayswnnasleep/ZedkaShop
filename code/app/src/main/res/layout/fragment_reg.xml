@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,80 +9,71 @@
 
     <TextView
         android:id="@+id/regText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="144dp"
-        android:layout_marginTop="152dp"
-        android:text="Войдите в аккаунт"
+        android:layout_marginTop="56dp"
+        android:text="Регистрация"
+        android:textSize="24sp"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/enterNameReg"
-        android:layout_width="411dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="476dp"
-        android:ems="10"
+        android:layout_marginTop="16dp"
         android:hint="Введите имя"
         android:padding="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/regText" />
+
+    <EditText
+        android:id="@+id/enterEmailReg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Введите почту"
+        android:inputType="textEmailAddress"
+        android:padding="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/enterNameReg" />
 
     <EditText
         android:id="@+id/enterPasswordReg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="340dp"
-        android:ems="10"
+        android:layout_marginTop="16dp"
         android:hint="Введите пароль"
         android:inputType="textPassword"
         android:padding="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/enterEmailReg"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="276dp"
-        android:ems="10"
-        android:hint="Введите почту"
-        android:inputType="textEmailAddress"
-        android:padding="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/enterEmailReg" />
 
     <Button
         android:id="@+id/regButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="240dp"
+        android:layout_marginTop="32dp"
         android:padding="16dp"
         android:text="Зарегистрироваться"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/enterPasswordReg" />
 
     <TextView
         android:id="@+id/haveAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="132dp"
-        android:layout_marginBottom="180dp"
-        android:text="Есть аккаут? Войдите"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageView
-        android:id="@+id/ArrowBack"
-        android:layout_width="20dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:text="Есть аккаунт? Войдите"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?attr/actionModeCloseDrawable" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/regButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

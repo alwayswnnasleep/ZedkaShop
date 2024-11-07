@@ -58,7 +58,7 @@ class ProfileFragment : Fragment() {
         val btnViewHistory: Button = view.findViewById(R.id.btnViewHistory)
 
         btnPurchaseHistory.setOnClickListener {
-            view.findNavController().navigate(R.id.action_navigation_profile_to_purchaseHistoryFragment)
+            view.findNavController().navigate(R.id.action_navigation_profile_to_viewPurchaseHistoryFragment)
         }
 
         btnViewHistory.setOnClickListener {

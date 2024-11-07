@@ -37,7 +37,7 @@ class RegFragment : Fragment() {
         val passwordEditText = view.findViewById<EditText>(R.id.enterPasswordReg)
         val regButton = view.findViewById<Button>(R.id.regButton)
         val haveAccountText = view.findViewById<TextView>(R.id.haveAccount)
-        val backButton = view.findViewById<ImageView>(R.id.ArrowBack)
+
 
         regButton.setOnClickListener {
             val name = nameEditText.text.toString().trim()
@@ -63,9 +63,7 @@ class RegFragment : Fragment() {
             view.findNavController().navigate(R.id.action_navigation_reg_to_authFragment2)
         }
 
-        backButton.setOnClickListener {
-            view.findNavController().navigate(R.id.navigation_profile)
-        }
+
 
         return view
     }

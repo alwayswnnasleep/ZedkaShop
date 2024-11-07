@@ -25,6 +25,7 @@ import com.example.zedkashop.data.ProductDB
 import com.example.zedkashop.ui.home.ProductAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.example.zedkashop.ui.history.HistoryManager  // Импортируем HistoryManager
 
 class CartFragment : Fragment(R.layout.fragment_cart) {
 
@@ -34,11 +35,10 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     private lateinit var buyButton: Button
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val productList = mutableListOf<ProductDB>()
-    private val productQuantities = mutableMapOf<String, Int>()
     private var totalPrice: Double = 0.0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated(view, savedInstanceState) // Передаем savedInstanceState
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).supportActionBar?.title = "Корзина"
 
@@ -53,7 +53,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             productList,
             { product -> navigateToProductDetail(product) },
             { /* Обработчик добавления в корзину не нужен в корзине */ },
-            ::onQuantityChange,
+            null,  // Мы не используем изменение количества в корзине
             isInCartFragment = true
         )
 
@@ -87,26 +87,23 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
             totalPrice = 0.0
             productList.clear()
-            productQuantities.clear()
 
             snapshot.documents.forEach { document ->
                 val productId = document.getString("productId") ?: return@forEach
-                val quantity = document.getDouble("quantity")?.toInt() ?: 1 // Изменение здесь
-                loadProduct(productId, quantity)
+                loadProduct(productId)
             }
         }.addOnFailureListener { e ->
             Log.e("CartFragment", "Ошибка при загрузке корзины: $e")
         }
     }
 
-    private fun loadProduct(productId: String, quantity: Int) {
+    private fun loadProduct(productId: String) {
         firestore.collection("products").document(productId).get()
             .addOnSuccessListener { productDoc ->
                 val product = productDoc.toObject(ProductDB::class.java)
                 product?.let {
                     productList.add(it)
-                    productQuantities[product.id] = quantity // Сохраняем количество
-                    totalPrice += (parsePrice(it.price) ?: 0.0) * quantity
+                    totalPrice += (parsePrice(it.price) ?: 0.0)
                     updateTotalPriceDisplay()
                     productAdapter.notifyDataSetChanged()
                 } ?: Log.e("CartFragment", "Продукт не найден для ID: $productId")
@@ -119,40 +116,56 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         return price.replace("₽", "").replace(",", ".").trim().toDoubleOrNull()
     }
 
-    private fun onQuantityChange(product: ProductDB, newQuantity: Int) {
-        productQuantities[product.id] = newQuantity
-        updateTotalPrice()
-        updateProductQuantityInDatabase(product.id, newQuantity)
-    }
-
-    private fun updateProductQuantityInDatabase(productId: String, newQuantity: Int) {
+    private fun purchaseProducts() {
+        Log.d("CartFragment", "Покупка товаров: $totalPrice")
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val cartRef = firestore.collection("users").document(userId).collection("cart").document(productId)
 
-        cartRef.update("quantity", newQuantity)
+        // Добавляем товары в коллекцию history_purchase
+        val historyRef = firestore.collection("users").document(userId).collection("history_purchase")
+
+        val purchaseData = productList.map { product ->
+            mapOf("productId" to product.id)  // Сохраняем только ID продукта
+        }
+
+        historyRef.add(mapOf("purchases" to purchaseData))
             .addOnSuccessListener {
-                Log.d("CartFragment", "Количество продукта обновлено в базе данных: $productId")
-            }
-            .addOnFailureListener { e ->
-                Log.e("CartFragment", "Ошибка при обновлении количества продукта: $e")
+                Log.d("CartFragment", "Товары успешно добавлены в историю покупок.")
+                // Добавляем каждую покупку в историю
+                productList.forEach { product ->
+                    HistoryManager.addToPurchaseHistory(requireContext(), product.id)
+                }
+                // Удаляем все товары из корзины
+                clearCart()
+            }.addOnFailureListener { e ->
+                Log.e("CartFragment", "Ошибка при добавлении в историю покупок: $e")
             }
     }
 
-    private fun updateTotalPrice() {
-        totalPrice = productList.sumOf { product ->
-            (parsePrice(product.price) ?: 0.0) * (productQuantities[product.id] ?: 1)
+    private fun clearCart() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val cartRef = firestore.collection("users").document(userId).collection("cart")
+
+        cartRef.get().addOnSuccessListener { snapshot ->
+            val batch = firestore.batch()
+            for (document in snapshot.documents) {
+                batch.delete(cartRef.document(document.id))
+            }
+            batch.commit().addOnSuccessListener {
+                Log.d("CartFragment", "Корзина успешно очищена.")
+                productList.clear()
+                productAdapter.notifyDataSetChanged()
+                updateTotalPriceDisplay()
+            }.addOnFailureListener { e ->
+                Log.e("CartFragment", "Ошибка при очищении корзины: $e")
+            }
+        }.addOnFailureListener { e ->
+            Log.e("CartFragment", "Ошибка при получении корзины: $e")
         }
-        updateTotalPriceDisplay()
     }
 
     private fun updateTotalPriceDisplay() {
         totalPriceTextView.text = "Общая стоимость: ${totalPrice} ₽"
-        buyButton.text = "Купить за ${totalPrice} ₽" // Обновляем текст кнопки
-    }
-
-    private fun purchaseProducts() {
-        Log.d("CartFragment", "Покупка товаров: $totalPrice")
-        // Логика для обработки покупки
+        buyButton.text = "Купить за ${totalPrice} ₽"
     }
 
     private fun setupSwipeToDelete() {
@@ -180,7 +193,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                 actionState: Int,
                 isCurrentlyActive: Boolean
             ) {
-                if (dX < 0) { // Свайп влево
+                if (dX < 0) {
                     val itemView = viewHolder.itemView
                     val background = ColorDrawable(Color.RED)
                     background.setBounds(
@@ -224,7 +237,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         cartRef.delete().addOnSuccessListener {
             productList.removeAt(position)
             productAdapter.notifyItemRemoved(position)
-            updateTotalPrice()
+            updateTotalPriceDisplay()
         }.addOnFailureListener { e ->
             Log.e("CartFragment", "Ошибка при удалении товара: $e")
         }

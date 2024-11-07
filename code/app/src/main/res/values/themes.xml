@@ -8,10 +8,17 @@
         <!-- Строка состояния -->
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
+
+        <!-- Настройка цвета нижней панели навигации -->
+        <item name="bottomNavigationStyle">@style/BottomNavigationStyle</item>
+    </style>
+
+    <style name="BottomNavigationStyle" parent="Widget.Design.BottomNavigationView">
+        <item name="itemIconTint">@color/bottom_nav_item_color</item>
+        <item name="itemTextColor">@color/bottom_nav_item_color</item>
     </style>
 
     <style name="Theme.SplashScreen" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimaryVariant">@color/black</item>
     </style>
-
 </resources>

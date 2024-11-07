@@ -26,7 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import androidx.recyclerview.widget.GridLayoutManager
-
+import com.example.zedkashop.ui.history.HistoryManager
 
 
 class HomeFragment : Fragment() {
@@ -151,7 +151,8 @@ class HomeFragment : Fragment() {
 
     private fun onProductClick(product: ProductDB) {
         product.views += 1
-        addToViewHistory(product)
+        // Call the new HistoryManager to add the product ID to the history
+        HistoryManager.addToViewHistory(requireContext(), product.id)
 
         val bundle = Bundle().apply {
             putSerializable("product", product)
@@ -160,21 +161,13 @@ class HomeFragment : Fragment() {
         findNavController().navigate(R.id.action_navigation_home_to_productDetailFragment, bundle)
     }
 
+
+
     private fun onBrandClick(brand: BrandDB) {
         // Обработка клика по бренду
         Toast.makeText(context, "Вы выбрали бренд: ${brand.name}", Toast.LENGTH_SHORT).show()
     }
 
-    private fun addToViewHistory(product: ProductDB) {
-        val sharedPreferences = requireContext().getSharedPreferences("view_history", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-
-        val currentHistory = sharedPreferences.getStringSet("history", mutableSetOf()) ?: mutableSetOf()
-        currentHistory.add(product.toString())
-
-        editor.putStringSet("history", currentHistory)
-        editor.apply()
-    }
 
     private fun addToCart(product: ProductDB) {
         CartManager.addToCart(requireContext(), product)

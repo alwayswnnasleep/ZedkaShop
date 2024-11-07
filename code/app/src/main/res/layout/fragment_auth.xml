@@ -8,67 +8,60 @@
 
     <TextView
         android:id="@+id/authText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="144dp"
-        android:layout_marginTop="152dp"
+        android:layout_marginTop="32dp"
         android:text="Войдите в аккаунт"
+        android:textSize="24sp"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/enterEmailAuth"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Введите почту"
+        android:inputType="textEmailAddress"
+        android:padding="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/authText" />
 
     <EditText
         android:id="@+id/enterPasswordAuth"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:ems="10"
+        android:layout_marginTop="16dp"
         android:hint="Введите пароль"
         android:inputType="textPassword"
         android:padding="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/enterEmailAuth" />
-
-    <EditText
-        android:id="@+id/enterEmailAuth"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="184dp"
-        android:ems="10"
-        android:hint="Введите почту"
-        android:inputType="textEmailAddress"
-        android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/enterEmailAuth" />
 
     <Button
         android:id="@+id/authButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="284dp"
+        android:layout_marginTop="32dp"
         android:padding="16dp"
         android:text="Войти"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/enterPasswordAuth" />
 
     <TextView
         android:id="@+id/haveAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="92dp"
-        android:layout_marginBottom="224dp"
-        android:text="Нету аккаунта? Зарегистриуйтесь"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-    <ImageView
-        android:id="@+id/ArrowBack"
-        android:layout_width="20dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:text="Нету аккаунта? Зарегистрируйтесь"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?attr/actionModeCloseDrawable" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/authButton"
+        android:gravity="center" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

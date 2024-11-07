@@ -51,7 +51,7 @@ class AuthFragment : Fragment() {
         val passwordEditText = view.findViewById<EditText>(R.id.enterPasswordAuth)
         val authButton = view.findViewById<Button>(R.id.authButton)
         val haveAccountTextView = view.findViewById<TextView>(R.id.haveAccount)
-        val backButton = view.findViewById<ImageView>(R.id.ArrowBack)
+
 
         authButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()

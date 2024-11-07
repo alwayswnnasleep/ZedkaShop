@@ -8,49 +8,48 @@
     app:cardCornerRadius="16dp"
     app:cardElevation="6dp">
 
-<RelativeLayout
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:padding="16dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
-<ImageView
-    android:id="@+id/productImage"
-    android:layout_width="150dp"
-    android:layout_height="150dp"
-    android:scaleType="fitCenter" />
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="fitCenter" />
 
-    <TextView
-        android:id="@+id/productName"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/productImage"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:paddingTop="8dp"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/productName"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/productImage"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:paddingTop="8dp"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/productPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
-        android:paddingTop="4dp"
-        android:textColor="@android:color/holo_green_dark"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/productPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:paddingTop="4dp"
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/addToCartButton"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="135dp"
-        android:layout_marginBottom="5dp"
-        android:background="?attr/selectableItemBackground"
-        android:src="@drawable/store" />
-
-</RelativeLayout>
-    </androidx.cardview.widget.CardView>
+        <ImageView
+            android:id="@+id/addToCartButton"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="5dp"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/store" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

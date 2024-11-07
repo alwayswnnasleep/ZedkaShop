@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@android:color/white">
 
     <TextView
         android:id="@+id/totalPriceTextView"
@@ -16,15 +17,21 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="502dp"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingBottom="16dp" />
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"/>
 
     <Button
         android:id="@+id/buyButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Купить"
-        android:background="@color/red"
-        android:textColor="@android:color/white"/>
+        android:backgroundTint="@color/black"
+    android:textColor="@android:color/white"
+    android:padding="16dp"
+    android:textSize="18sp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:gravity="center" />
 </LinearLayout>

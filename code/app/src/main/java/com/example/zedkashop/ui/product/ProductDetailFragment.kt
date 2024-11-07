@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.zedkashop.R
 import com.example.zedkashop.data.ProductDB
 import com.example.zedkashop.databinding.FragmentProductDetailBinding
+import com.example.zedkashop.ui.cart.CartManager
 
 class ProductDetailFragment : Fragment() {
 
@@ -29,6 +30,7 @@ class ProductDetailFragment : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.title = "Детали продукта"
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        // Получение продукта из аргументов
         val product = arguments?.getSerializable("product") as? ProductDB
 
         product?.let {
@@ -42,6 +44,12 @@ class ProductDetailFragment : Fragment() {
             Glide.with(this)
                 .load(it.imageUrl)
                 .into(binding.productImage)
+
+            // Настройка кнопки добавления в корзину
+            binding.addToCartButton.setOnClickListener {
+
+                CartManager.addToCart(requireContext(), product)
+            }
         } ?: Log.e("ProductDetailFragment", "Product data is null")
 
         return binding.root
