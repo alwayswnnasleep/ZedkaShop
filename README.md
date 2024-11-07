@@ -10,3 +10,5 @@
 [User interface images](https://github.com/alwayswnnasleep/ZedkaShop/tree/master/docs/Mockups)
 
 [Diagrams](https://github.com/alwayswnnasleep/ZedkaShop/tree/master/docs/Diagrams)
+
+[Tests](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Tests/)
