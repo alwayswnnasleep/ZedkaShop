@@ -121,7 +121,7 @@
 
 ## Представление результатов
 
-Результаты представлены в документе "Результаты тестирования".
+Результаты представлены в документе ["Результаты тестирования"](https://github.com/alwayswnnasleep/ZedkaShop/blob/master/docs/Tests/testResult.md).
 
 <a name="conclusion"/>
 
