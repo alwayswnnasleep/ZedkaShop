@@ -17,6 +17,8 @@
             android:id="@+id/productImage"
             android:layout_width="@dimen/image_size"
             android:layout_height="@dimen/image_size"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/margin_end_item_product"
             android:scaleType="fitCenter" />
 
         <TextView

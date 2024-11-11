@@ -1,10 +1,46 @@
 <resources>
-    <!-- Default screen margins for phones -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- Default screen margins for tablets -->
+    <dimen name="activity_horizontal_margin">24dp</dimen>
+    <dimen name="activity_vertical_margin">24dp</dimen>
+    <dimen name="margin_bottom_item_product">8dp</dimen>
+    <dimen name="margin_end_item_product">12dp</dimen>
+    <dimen name="margin_top">12dp</dimen>
+    <dimen name="layout_margin20dp">28dp</dimen>
+    <dimen name="layout_margin28dp">32dp</dimen>
+    <dimen name="margin60dp">80dp</dimen>
+    <dimen name="margin120dp">160dp</dimen>
+    <dimen name="margin32dp">40dp</dimen>
+    <dimen name="margin10dp">12dp</dimen>
+    <dimen name="margin88">100dp</dimen>
+    <dimen name="margin40dp">48dp</dimen>
 
     <!-- Text sizes -->
-    <dimen name="text_size_small">14sp</dimen>
-    <dimen name="text_size_medium">16sp</dimen>
-    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
+    <dimen name="text_size_mega_medium">22sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_mega_large">28sp</dimen>
+    <dimen name="text_size_ultra_large">36sp</dimen>
+
+    <!-- Image sizes -->
+    <dimen name="image_size">200dp</dimen>
+    <dimen name="icon_button_size">24dp</dimen>
+    <dimen name="logo_size">80dp</dimen>
+    <dimen name="brand_logo_size">50dp</dimen>
+    <dimen name="brand_logo_size_width">90dp</dimen>
+    <dimen name="image_height_detail">300dp</dimen>
+    <dimen name="place_photo_size">300dp</dimen>
+    <dimen name="profile_photo_size">200dp</dimen>
+    <dimen name="layout_height">350dp</dimen>
+    <dimen name="card_corner_radius">20dp</dimen>
+    <dimen name="card_elevation">8dp</dimen>
+    <dimen name="card_padding">20dp</dimen>
+    <dimen name="home_fragment_padding">12dp</dimen>
+    <dimen name="padding_top_text">8dp</dimen>
+    <dimen name="views_image">32dp</dimen>
+    <dimen name="icon_logout">40dp</dimen>
+
+    <!-- Button sizes -->
+    <dimen name="button_incdec">60dp</dimen>
+    <dimen name="bttn_height">56dp</dimen>
 </resources>

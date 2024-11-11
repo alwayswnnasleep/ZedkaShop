@@ -1,44 +1,44 @@
-<resources>
-    <!-- Default screen margins for phones -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="margin_bottom_item_product">4dp</dimen>
-    <dimen name="margin_end_item_product">8dp</dimen>
-    <dimen name="margin_top">8dp</dimen>
-    <dimen name="layout_margin20dp">20dp</dimen>
-    <dimen name="layout_margin28dp">28dp</dimen>
-    <dimen name="margin60dp">60dp</dimen>
-    <dimen name="margin120dp">120dp</dimen>
-    <dimen name="margin32dp">32dp</dimen>
-    <dimen name="margin10dp">10dp</dimen>
-    <dimen name="margin88">88dp</dimen>
-    <dimen name="margin40dp">40dp</dimen>
-    <!-- Text sizes -->
-    <dimen name="text_size_small">14sp</dimen>
-    <dimen name="text_size_medium">16sp</dimen>
-    <dimen name="text_size_mega_medium">20sp</dimen>
-    <dimen name="text_size_large">18sp</dimen>
-    <dimen name="text_size_mega_large">24sp</dimen>
-    <dimen name="text_size_ultra_large">32sp</dimen>
+    <resources>
+        <!-- Default screen margins for phones -->
+        <dimen name="activity_horizontal_margin">16dp</dimen>
+        <dimen name="activity_vertical_margin">16dp</dimen>
+        <dimen name="margin_bottom_item_product">4dp</dimen>
+        <dimen name="margin_end_item_product">8dp</dimen>
+        <dimen name="margin_top">8dp</dimen>
+        <dimen name="layout_margin20dp">20dp</dimen>
+        <dimen name="layout_margin28dp">28dp</dimen>
+        <dimen name="margin60dp">60dp</dimen>
+        <dimen name="margin120dp">120dp</dimen>
+        <dimen name="margin32dp">32dp</dimen>
+        <dimen name="margin10dp">10dp</dimen>
+        <dimen name="margin88">88dp</dimen>
+        <dimen name="margin40dp">40dp</dimen>
+        <!-- Text sizes -->
+        <dimen name="text_size_small">14sp</dimen>
+        <dimen name="text_size_medium">16sp</dimen>
+        <dimen name="text_size_mega_medium">20sp</dimen>
+        <dimen name="text_size_large">18sp</dimen>
+        <dimen name="text_size_mega_large">24sp</dimen>
+        <dimen name="text_size_ultra_large">32sp</dimen>
 
-    <!-- Image sizes -->
-    <dimen name="image_size">150dp</dimen>
-    <dimen name="icon_button_size">20dp</dimen>
-    <dimen name="logo_size">64dp</dimen>
-    <dimen name="brand_logo_size">40dp</dimen>
-    <dimen name="brand_logo_size_width">70dp</dimen>
-    <dimen name="image_height_detail">200dp</dimen>
-    <dimen name="place_photo_size">200dp</dimen>
-    <dimen name="profile_photo_size">160dp</dimen>
-    <dimen name="layout_height">260dp</dimen>
-    <dimen name="card_corner_radius">16dp</dimen>
-    <dimen name="card_elevation">6dp</dimen>
-    <dimen name="card_padding">16dp</dimen>
-    <dimen name="home_fragment_padding">8dp</dimen>
-    <dimen name="padding_top_text">4dp</dimen>
-    <dimen name="views_image">24dp</dimen>
-    <dimen name="icon_logout">32dp</dimen>
-    <!--button sizes-->
-    <dimen name="button_incdec">45dp</dimen>
-    <dimen name="bttn_height">48dp</dimen>
-    </resources>
+        <!-- Image sizes -->
+        <dimen name="image_size">150dp</dimen>
+        <dimen name="icon_button_size">20dp</dimen>
+        <dimen name="logo_size">64dp</dimen>
+        <dimen name="brand_logo_size">40dp</dimen>
+        <dimen name="brand_logo_size_width">70dp</dimen>
+        <dimen name="image_height_detail">200dp</dimen>
+        <dimen name="place_photo_size">200dp</dimen>
+        <dimen name="profile_photo_size">160dp</dimen>
+        <dimen name="layout_height">260dp</dimen>
+        <dimen name="card_corner_radius">16dp</dimen>
+        <dimen name="card_elevation">6dp</dimen>
+        <dimen name="card_padding">16dp</dimen>
+        <dimen name="home_fragment_padding">8dp</dimen>
+        <dimen name="padding_top_text">4dp</dimen>
+        <dimen name="views_image">24dp</dimen>
+        <dimen name="icon_logout">32dp</dimen>
+        <!--button sizes-->
+        <dimen name="button_incdec">45dp</dimen>
+        <dimen name="bttn_height">48dp</dimen>
+        </resources>

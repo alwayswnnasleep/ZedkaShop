@@ -26,8 +26,12 @@ class DashboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.title = "Каталог"
+
+        // Показываем ActionBar и устанавливаем заголовок
+        (activity as AppCompatActivity).supportActionBar?.apply {
+            show()
+            title = "Каталог"
+        }
 
         // Список элементов для отображения
         val items = listOf(
@@ -39,20 +43,25 @@ class DashboardFragment : Fragment() {
         )
 
         // Настройка RecyclerView
-        binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
-        binding.recyclerView.adapter = CatalogAdapter(items) { catalogItem ->
-            // Создание Bundle для передачи выбранной категории
-            val bundle = Bundle().apply {
-                putString("category", catalogItem.name) // Передаем выбранную категорию
-            }
+        setupRecyclerView(items)
+    }
 
-            // Навигация к ProductCatalogFragment с передачей данных
-            findNavController().navigate(R.id.action_navigation_dashboard_to_productCatalogFragment, bundle)
+    private fun setupRecyclerView(items: List<CatalogItem>) {
+        // Установка менеджера компоновки и адаптера для RecyclerView
+        binding.recyclerView.apply {
+            layoutManager = GridLayoutManager(context, 2) // 2 столбца
+            adapter = CatalogAdapter(items) { catalogItem ->
+                // Навигация к ProductCatalogFragment с передачей выбранной категории
+                val bundle = Bundle().apply {
+                    putString("category", catalogItem.name) // Передаем выбранную категорию
+                }
+                findNavController().navigate(R.id.action_navigation_dashboard_to_productCatalogFragment, bundle)
+            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = null // Очищаем ссылку на binding
     }
 }
