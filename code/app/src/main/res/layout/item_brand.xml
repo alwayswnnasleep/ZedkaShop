@@ -4,20 +4,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardElevation="4dp"
-    app:cardCornerRadius="8dp">
+    android:layout_margin="@dimen/margin_end_item_product"
+    app:cardElevation="@dimen/card_elevation"
+    app:cardCornerRadius="@dimen/card_corner_radius">
 
 <LinearLayout
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
 android:orientation="vertical"
-android:padding="8dp">
+android:padding="@dimen/home_fragment_padding">
 
 <ImageView
     android:id="@+id/brandLogo"
-    android:layout_width="80dp"
-    android:layout_height="40dp"
+    android:layout_width="@dimen/brand_logo_size_width"
+    android:layout_height="@dimen/brand_logo_size"
     android:adjustViewBounds="true"
     android:scaleType="fitCenter" />
 

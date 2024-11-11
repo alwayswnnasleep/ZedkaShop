@@ -2,9 +2,23 @@
     <!-- Default screen margins for phones -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-
+    <dimen name="margin_bottom_item_product">4dp</dimen>
+    <dimen name="margin_end_item_product">8dp</dimen>
     <!-- Text sizes -->
     <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_medium">16sp</dimen>
     <dimen name="text_size_large">18sp</dimen>
-</resources>
+
+    <!-- Image sizes -->
+    <dimen name="image_size">150dp</dimen>
+    <dimen name="icon_button_size">20dp</dimen>
+    <dimen name="logo_size">64dp</dimen>
+    <dimen name="brand_logo_size">40dp</dimen>
+    <dimen name="brand_logo_size_width">70dp</dimen>
+
+    <dimen name="layout_height">260dp</dimen>
+    <dimen name="card_corner_radius">16dp</dimen>
+    <dimen name="card_elevation">6dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="home_fragment_padding">8dp</dimen>
+    </resources>

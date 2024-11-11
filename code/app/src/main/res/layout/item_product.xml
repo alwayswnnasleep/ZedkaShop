@@ -4,30 +4,30 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="260dp"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="6dp">
+    android:layout_height="@dimen/layout_height"
+    android:layout_margin="@dimen/margin_end_item_product"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="@dimen/card_elevation">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:padding="@dimen/card_padding">
 
         <ImageView
             android:id="@+id/productImage"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="@dimen/image_size"
+            android:layout_height="@dimen/image_size"
             android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/productName"
-            android:layout_width="150dp"
+            android:layout_width="@dimen/image_size"
             android:layout_height="wrap_content"
             android:layout_below="@id/productImage"
             android:ellipsize="end"
             android:maxLines="2"
-            android:paddingTop="8dp"
-            android:textSize="15sp"
+            android:paddingTop="@dimen/margin_end_item_product"
+            android:textSize="@dimen/text_size_large"
             android:textStyle="bold" />
 
         <TextView
@@ -35,20 +35,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
-            android:paddingTop="4dp"
+            android:layout_marginBottom="@dimen/margin_bottom_item_product"
+            android:paddingTop="@dimen/margin_bottom_item_product"
             android:textColor="@android:color/holo_green_dark"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_large"
             android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/addToCartButton"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="@dimen/icon_button_size"
+            android:layout_height="@dimen/icon_button_size"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="@dimen/margin_end_item_product"
+            android:layout_marginBottom="@dimen/margin_bottom_item_product"
             android:background="?attr/selectableItemBackground"
             android:src="@drawable/store" />
     </RelativeLayout>
