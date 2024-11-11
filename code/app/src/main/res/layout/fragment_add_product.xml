@@ -7,9 +7,9 @@
 
     <ImageView
         android:id="@+id/placePhoto"
-        android:layout_width="158dp"
-        android:layout_height="128dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="@dimen/place_photo_size"
+        android:layout_height="@dimen/place_photo_size"
+        android:layout_marginTop="@dimen/margin32dp"
         android:adjustViewBounds="true"
         android:src="@drawable/camera"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,7 +21,7 @@
         android:id="@+id/enterName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="@dimen/margin120dp"
         android:hint="Введите название продукта"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -33,7 +33,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Введите цену продукта"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/margin_top"
         app:layout_constraintTop_toBottomOf="@id/enterName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -43,7 +43,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Введите описание продукта"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/margin_top"
         app:layout_constraintTop_toBottomOf="@id/enterPrice"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -52,7 +52,7 @@
         android:id="@+id/chooseManufacturer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/margin_top"
         app:layout_constraintTop_toBottomOf="@id/enterDescription"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -61,7 +61,7 @@
         android:id="@+id/chooseCategory"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/margin_top"
         app:layout_constraintTop_toBottomOf="@id/chooseManufacturer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -71,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Добавить продукт"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/margin_top"
         app:layout_constraintTop_toBottomOf="@id/chooseCategory"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
