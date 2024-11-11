@@ -71,7 +71,7 @@ class ProfileFragment : Fragment() {
         val btnPurchaseHistory: Button = view.findViewById(R.id.btnPurchaseHistory)
         val btnViewHistory: Button = view.findViewById(R.id.btnViewHistory)
         val btnManageProducts: Button = view.findViewById(R.id.btnManageProducts)
-        val btnProfileSettings: Button = view.findViewById(R.id.btnProfileSettings)
+
         btnPurchaseHistory.setOnClickListener {
             view.findNavController().navigate(R.id.action_navigation_profile_to_viewPurchaseHistoryFragment)
         }
@@ -83,9 +83,7 @@ class ProfileFragment : Fragment() {
         btnManageProducts.setOnClickListener {
             view.findNavController().navigate(R.id.action_navigation_profile_to_manageProductsFragment)
         }
-        btnProfileSettings.setOnClickListener{
 
-        }
         return view
     }
 }

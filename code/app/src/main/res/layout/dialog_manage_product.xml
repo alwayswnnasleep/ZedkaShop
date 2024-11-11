@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="@dimen/activity_vertical_margin">
 
     <Button
         android:id="@+id/buttonEdit"
@@ -16,5 +16,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Удалить"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="@dimen/margin_top" />
 </LinearLayout>

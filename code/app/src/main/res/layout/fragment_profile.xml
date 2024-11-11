@@ -7,10 +7,10 @@
 
     <ImageView
         android:id="@+id/profilePhoto"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="56dp"
+        android:layout_width="@dimen/profile_photo_size"
+        android:layout_height="@dimen/profile_photo_size"
+        android:layout_marginStart="@dimen/layout_margin20dp"
+        android:layout_marginTop="@dimen/margin60dp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -18,10 +18,10 @@
 
     <ImageView
         android:id="@+id/logOut"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="@dimen/icon_logout"
+        android:layout_height="@dimen/icon_logout"
+        android:layout_marginTop="@dimen/margin_top"
+        android:layout_marginEnd="@dimen/margin_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/user_logout" />
@@ -30,41 +30,43 @@
         android:id="@+id/userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="56dp"
+        android:textSize="@dimen/text_size_ultra_large"
+        android:layout_marginStart="@dimen/layout_margin20dp"
+        android:layout_marginTop="@dimen/margin60dp"
         app:layout_constraintStart_toEndOf="@+id/profilePhoto"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/userEmail"
+        android:textSize="@dimen/text_size_large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="108dp"
+        android:layout_marginStart="@dimen/layout_margin20dp"
+        android:layout_marginTop="@dimen/bttn_height"
         android:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/profilePhoto"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/userName" />
 
     <Button
         android:id="@+id/btnPurchaseHistory"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="@dimen/layout_margin20dp"
         android:background="@android:color/holo_blue_light"
-        android:minHeight="48dp"
+        android:minHeight="@dimen/bttn_height"
         android:text="История покупок"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/profilePhoto" />
 
     <Button
         android:id="@+id/btnViewHistory"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/layout_margin20dp"
         android:background="@android:color/holo_green_light"
-        android:minHeight="48dp"
+        android:minHeight="@dimen/bttn_height"
         android:text="История просмотров"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,24 +76,15 @@
         android:id="@+id/btnManageProducts"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/layout_margin20dp"
         android:background="@android:color/holo_orange_light"
-        android:minHeight="48dp"
+        android:minHeight="@dimen/bttn_height"
         android:text="Управление товарами"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnViewHistory" />
 
-    <Button
-        android:id="@+id/btnProfileSettings"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/holo_orange_light"
-        android:minHeight="48dp"
-        android:text="Настройки аккаунта"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnManageProducts" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
