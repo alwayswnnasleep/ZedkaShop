@@ -2,10 +2,8 @@ package com.example.zedkashop.ui.profile
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -17,7 +15,7 @@ import com.example.zedkashop.ui.home.ProductAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class ViewHistoryFragment : Fragment(R.layout.fragment_view_history) {
+class ViewHistoryFragment : Fragment(R.layout.fragment_history) {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var productAdapter: ProductAdapter

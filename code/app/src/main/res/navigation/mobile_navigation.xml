@@ -67,6 +67,9 @@
         <action
             android:id="@+id/action_navigation_profile_to_viewPurchaseHistoryFragment"
             app:destination="@id/viewPurchaseHistoryFragment2" />
+        <action
+            android:id="@+id/action_navigation_profile_to_manageProductsFragment"
+            app:destination="@id/manageProductsFragment" />
     </fragment>
 
     <fragment
@@ -149,6 +152,14 @@
         android:label="ViewPurchaseHistoryFragment" >
         <action
             android:id="@+id/action_viewPurchaseHistoryFragment2_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/manageProductsFragment"
+        android:name="com.example.zedkashop.ui.manageproducts.ManageProductsFragment"
+        android:label="ManageProductsFragment" >
+        <action
+            android:id="@+id/action_manageProductsFragment_to_productDetailFragment"
             app:destination="@id/productDetailFragment" />
     </fragment>
 

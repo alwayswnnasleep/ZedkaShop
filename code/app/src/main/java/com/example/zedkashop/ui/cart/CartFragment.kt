@@ -26,6 +26,7 @@ import com.example.zedkashop.ui.home.ProductAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.zedkashop.ui.history.HistoryManager  // Импортируем HistoryManager
+import com.google.firebase.firestore.FieldValue
 
 class CartFragment : Fragment(R.layout.fragment_cart) {
 
@@ -46,6 +47,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         recyclerView = view.findViewById(R.id.recyclerView)
         totalPriceTextView = view.findViewById(R.id.totalPriceTextView)
         buyButton = view.findViewById(R.id.buyButton)
+        buyButton.visibility = View.GONE
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         productAdapter = ProductAdapter(
@@ -81,7 +83,8 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         cartRef.get().addOnSuccessListener { snapshot ->
             if (snapshot.isEmpty) {
                 totalPriceTextView.text = "Корзина пуста"
-                buyButton.text = "Купить"
+                // Скрываем кнопку "Купить", если корзина пуста
+                buyButton.visibility = View.GONE
                 return@addOnSuccessListener
             }
 
@@ -106,6 +109,8 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                     totalPrice += (parsePrice(it.price) ?: 0.0)
                     updateTotalPriceDisplay()
                     productAdapter.notifyDataSetChanged()
+
+                    buyButton.visibility = View.VISIBLE
                 } ?: Log.e("CartFragment", "Продукт не найден для ID: $productId")
             }.addOnFailureListener { e ->
                 Log.e("CartFragment", "Ошибка при загрузке продукта: $e")
@@ -120,27 +125,41 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         Log.d("CartFragment", "Покупка товаров: $totalPrice")
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
-        // Добавляем товары в коллекцию history_purchase
+        // Ссылка на коллекцию истории покупок
         val historyRef = firestore.collection("users").document(userId).collection("history_purchase")
 
+        // Создаем массив с данными о покупке
         val purchaseData = productList.map { product ->
             mapOf("productId" to product.id)  // Сохраняем только ID продукта
         }
 
-        historyRef.add(mapOf("purchases" to purchaseData))
-            .addOnSuccessListener {
-                Log.d("CartFragment", "Товары успешно добавлены в историю покупок.")
-                // Добавляем каждую покупку в историю
-                productList.forEach { product ->
-                    HistoryManager.addToPurchaseHistory(requireContext(), product.id)
+        // Добавляем каждый товар отдельно в историю покупок
+        purchaseData.forEach { data ->
+            historyRef.add(data)
+                .addOnSuccessListener {
+                    Log.d("CartFragment", "Товар ${data["productId"]} успешно добавлен в историю покупок.")
+                    // Увеличиваем количество покупок для каждого товара
+                    incrementProductPurchases(data["productId"] as String)
                 }
-                // Удаляем все товары из корзины
-                clearCart()
-            }.addOnFailureListener { e ->
-                Log.e("CartFragment", "Ошибка при добавлении в историю покупок: $e")
+                .addOnFailureListener { e ->
+                    Log.e("CartFragment", "Ошибка при добавлении товара ${data["productId"]} в историю покупок: $e")
+                }
+        }
+
+
+        clearCart()
+    }
+    private fun incrementProductPurchases(productId: String) {
+        val productRef = firestore.collection("products").document(productId)
+
+        productRef.update("purchases", FieldValue.increment(1)) // Увеличиваем поле purchases на 1
+            .addOnSuccessListener {
+                Log.d("CartFragment", "Количество покупок для товара $productId увеличено.")
+            }
+            .addOnFailureListener { e ->
+                Log.e("CartFragment", "Ошибка при увеличении количества покупок: $e")
             }
     }
-
     private fun clearCart() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val cartRef = firestore.collection("users").document(userId).collection("cart")
@@ -154,7 +173,9 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                 Log.d("CartFragment", "Корзина успешно очищена.")
                 productList.clear()
                 productAdapter.notifyDataSetChanged()
+                totalPrice = 0.0 // Обнуляем стоимость
                 updateTotalPriceDisplay()
+                buyButton.visibility = View.GONE // Скрываем кнопку "Купить"
             }.addOnFailureListener { e ->
                 Log.e("CartFragment", "Ошибка при очищении корзины: $e")
             }

@@ -31,6 +31,28 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/productCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/productName"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@+id/productImage"
+
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/productManufacturer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/productCategory"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@+id/productImage"
+
+            android:textSize="14sp" />
+
+        <TextView
             android:id="@+id/productPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

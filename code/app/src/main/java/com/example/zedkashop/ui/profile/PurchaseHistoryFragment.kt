@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zedkashop.R
 import com.example.zedkashop.data.ProductDB
@@ -17,7 +17,7 @@ import com.example.zedkashop.ui.home.ProductAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class ViewPurchaseHistoryFragment : Fragment(R.layout.fragment_purchase_history) {
+class ViewPurchaseHistoryFragment : Fragment(R.layout.fragment_history) {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var productAdapter: ProductAdapter
@@ -34,9 +34,9 @@ class ViewPurchaseHistoryFragment : Fragment(R.layout.fragment_purchase_history)
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).supportActionBar?.title = "История покупок"
 
-        // Инициализация RecyclerView с LinearLayoutManager для отображения в списке
+        // Инициализация RecyclerView с GridLayoutManager для отображения по 2 товара в строке
         recyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext()) // Список
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2) // 2 товара в строке
 
         productAdapter = ProductAdapter(requireContext(), productList, { product ->
             navigateToProductDetail(product)

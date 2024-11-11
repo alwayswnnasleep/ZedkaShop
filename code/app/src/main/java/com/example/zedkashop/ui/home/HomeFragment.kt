@@ -151,13 +151,12 @@ class HomeFragment : Fragment() {
 
     private fun onProductClick(product: ProductDB) {
         product.views += 1
-        // Call the new HistoryManager to add the product ID to the history
+        val productRef = FirebaseFirestore.getInstance().collection("products").document(product.id)
+        productRef.update("views", product.views)
         HistoryManager.addToViewHistory(requireContext(), product.id)
-
         val bundle = Bundle().apply {
             putSerializable("product", product)
         }
-
         findNavController().navigate(R.id.action_navigation_home_to_productDetailFragment, bundle)
     }
 

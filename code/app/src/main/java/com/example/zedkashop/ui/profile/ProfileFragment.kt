@@ -18,12 +18,13 @@ import com.example.zedkashop.R
 class ProfileFragment : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var viewModel: ProfileViewModel
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.show()
-        // Установка заголовка тулбара
-        (activity as AppCompatActivity).supportActionBar?.title = "Профиль" // или другой заголовок
+        (activity as AppCompatActivity).supportActionBar?.title = "Профиль"
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,10 +42,22 @@ class ProfileFragment : Fragment() {
             return view
         }
 
+        // Получаем email пользователя
         val userEmail = sharedPreferences.getString("userEmail", "Нет email")
+
+        // Устанавливаем email
         val userEmailTextView: TextView = view.findViewById(R.id.userEmail)
         userEmailTextView.text = userEmail
 
+        // Наблюдаем за изменениями имени пользователя
+        val userNameTextView: TextView = view.findViewById(R.id.userName)
+        viewModel.userName.observe(viewLifecycleOwner) { userName ->
+            userNameTextView.text = userName
+        }
+        // Загружаем имя пользователя
+        viewModel.loadUserName()
+
+        // Логика выхода из системы и навигации остается прежней
         view.findViewById<ImageView>(R.id.logOut).setOnClickListener {
             viewModel.signOut()
             with(sharedPreferences.edit()) {
@@ -54,9 +67,11 @@ class ProfileFragment : Fragment() {
             view.findNavController().navigate(R.id.action_navigation_profile_to_auth_navigation)
         }
 
+        // Остальные кнопки
         val btnPurchaseHistory: Button = view.findViewById(R.id.btnPurchaseHistory)
         val btnViewHistory: Button = view.findViewById(R.id.btnViewHistory)
-
+        val btnManageProducts: Button = view.findViewById(R.id.btnManageProducts)
+        val btnProfileSettings: Button = view.findViewById(R.id.btnProfileSettings)
         btnPurchaseHistory.setOnClickListener {
             view.findNavController().navigate(R.id.action_navigation_profile_to_viewPurchaseHistoryFragment)
         }
@@ -65,6 +80,12 @@ class ProfileFragment : Fragment() {
             view.findNavController().navigate(R.id.action_navigation_profile_to_viewHistoryFragment)
         }
 
+        btnManageProducts.setOnClickListener {
+            view.findNavController().navigate(R.id.action_navigation_profile_to_manageProductsFragment)
+        }
+        btnProfileSettings.setOnClickListener{
+
+        }
         return view
     }
 }

@@ -11,5 +11,6 @@ data class ProductDB(
     val imageUrl: String = "",
     val consumer: String = "",
     val category: String = "",
-    var views: Int = 0
+    var views: Int = 0,
+    var purchases: Int = 0
 ) : Serializable

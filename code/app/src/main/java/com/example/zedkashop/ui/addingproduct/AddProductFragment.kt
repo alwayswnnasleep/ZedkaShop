@@ -18,6 +18,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.example.zedkashop.R
@@ -128,7 +129,14 @@ class AddProductFragment : Fragment() {
         }
     }
 
-    private fun uploadImageToFirebase(imageUri: Uri, category: String, productName: String, productPrice: String, productDescription: String, selectedConsumer: String) {
+    private fun uploadImageToFirebase(
+        imageUri: Uri,
+        category: String,
+        productName: String,
+        productPrice: String,
+        productDescription: String,
+        selectedConsumer: String
+    ) {
         val fileName = UUID.randomUUID().toString()
         val storageRef = storage.reference.child("products/$category/$fileName.jpg")
 
@@ -147,6 +155,8 @@ class AddProductFragment : Fragment() {
                     val productRef = firestore.collection("products").document()
                     productRef.set(product.copy(id = productRef.id))
                         .addOnSuccessListener {
+                            // Добавление ID товара пользователю
+                            addProductToUser(productRef.id)
                             Toast.makeText(requireContext(), "Продукт успешно добавлен!", Toast.LENGTH_SHORT).show()
                             clearInputs()
                         }
@@ -157,6 +167,19 @@ class AddProductFragment : Fragment() {
             }
             .addOnFailureListener { e ->
                 Toast.makeText(requireContext(), "Ошибка загрузки изображения: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun addProductToUser(productId: String) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val userProductsRef = firestore.collection("users").document(userId).collection("products").document(productId)
+
+        userProductsRef.set(mapOf("productId" to productId))
+            .addOnSuccessListener {
+                // Опционально обработать успешное добавление
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Ошибка добавления товара пользователю: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
