@@ -30,63 +30,62 @@ class AddProductFragment : Fragment() {
     private lateinit var storage: FirebaseStorage
     private var selectedImageUri: Uri? = null
     private lateinit var placePhoto: ImageView
-    private lateinit var view: View
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.title = "Добавление товара"
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        view = inflater.inflate(R.layout.fragment_add_product, container, false)
+        val view = inflater.inflate(R.layout.fragment_add_product, container, false)
 
-        firestore = FirebaseFirestore.getInstance()
-        storage = FirebaseStorage.getInstance()
+        try {
+            firestore = FirebaseFirestore.getInstance()
+            storage = FirebaseStorage.getInstance()
 
-        placePhoto = view.findViewById(R.id.placePhoto)
-        val enterName: EditText = view.findViewById(R.id.enterName)
-        val enterPrice: EditText = view.findViewById(R.id.enterPrice)
-        val enterDescription: EditText = view.findViewById(R.id.enterDescription)
-        val chooseManufacturer: Spinner = view.findViewById(R.id.chooseManufacturer)
-        val chooseCategory: Spinner = view.findViewById(R.id.chooseCategory)
-        val addButton: Button = view.findViewById(R.id.addProduct)
+            placePhoto = view.findViewById<ImageView>(R.id.placePhoto)
+            val enterName: EditText = view.findViewById(R.id.enterName)
+            val enterPrice: EditText = view.findViewById(R.id.enterPrice)
+            val enterDescription: EditText = view.findViewById(R.id.enterDescription)
+            val chooseManufacturer: Spinner = view.findViewById(R.id.chooseManufacturer)
+            val chooseCategory: Spinner = view.findViewById(R.id.chooseCategory)
+            val addButton: Button = view.findViewById(R.id.addProduct)
 
-        placePhoto.setOnClickListener {
-            openGallery()
-        }
+            setupSpinners(view)
 
-        addButton.setOnClickListener {
-            val productName = enterName.text.toString()
-            val productPrice = enterPrice.text.toString().trim()
-            val productDescription = enterDescription.text.toString()
-            val selectedConsumer = chooseManufacturer.selectedItem.toString()
-            val selectedCategory = chooseCategory.selectedItem.toString()
-
-            if (productName.isNotEmpty() && productPrice.isNotEmpty() && productDescription.isNotEmpty() && selectedImageUri != null) {
-                val formattedPrice = "$productPrice ₽"
-                uploadImageToFirebase(selectedImageUri!!, selectedCategory, productName, formattedPrice, productDescription, selectedConsumer)
-            } else {
-                Toast.makeText(requireContext(), "Пожалуйста, заполните все поля и выберите изображение.", Toast.LENGTH_SHORT).show()
+            placePhoto.setOnClickListener {
+                openGallery()
             }
-        }
 
-        setupSpinners()
+            addButton.setOnClickListener {
+                val productName = enterName.text.toString()
+                val productPrice = enterPrice.text.toString().trim()
+                val productDescription = enterDescription.text.toString()
+                val selectedConsumer = chooseManufacturer.selectedItem?.toString() ?: ""
+                val selectedCategory = chooseCategory.selectedItem?.toString() ?: ""
+
+                if (productName.isNotEmpty() && productPrice.isNotEmpty() && productDescription.isNotEmpty() && selectedImageUri != null) {
+                    val formattedPrice = "$productPrice ₽"
+                    uploadImageToFirebase(selectedImageUri!!, selectedCategory, productName, formattedPrice, productDescription, selectedConsumer)
+                } else {
+                    Toast.makeText(requireContext(), "Пожалуйста, заполните все поля и выберите изображение.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            (activity as AppCompatActivity).supportActionBar?.title = "Добавить товар"
+
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Ошибка инициализации: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
 
         return view
     }
 
-    private fun setupSpinners() {
+    private fun setupSpinners(view: View) {
         val categories = arrayOf("Шлем", "Бронежилет", "Одежда", "Разгрузочная система", "Подсумок", "Обувь")
         val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         val chooseCategory: Spinner = view.findViewById(R.id.chooseCategory)
         chooseCategory.adapter = categoryAdapter
 
-        // Настройка Spinner для производителей
         val manufacturersMap = mapOf(
             "Шлем" to arrayOf("FAST", "Omnitek"),
             "Бронежилет" to arrayOf("РусАрм"),
@@ -98,9 +97,8 @@ class AddProductFragment : Fragment() {
 
         val chooseManufacturer: Spinner = view.findViewById(R.id.chooseManufacturer)
 
-        // Устанавливаем слушатель для выбора категории
-        chooseCategory.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+        chooseCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedCategory = categories[position]
                 val manufacturers = manufacturersMap[selectedCategory] ?: emptyArray()
                 val manufacturerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, manufacturers)
@@ -111,7 +109,7 @@ class AddProductFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Ничего не делаем
             }
-        })
+        }
     }
 
     private fun openGallery() {
@@ -184,6 +182,7 @@ class AddProductFragment : Fragment() {
     }
 
     private fun clearInputs() {
+        val view = requireView() // Получаем текущий view
         view.findViewById<EditText>(R.id.enterName).text.clear()
         view.findViewById<EditText>(R.id.enterPrice).text.clear()
         view.findViewById<EditText>(R.id.enterDescription).text.clear()

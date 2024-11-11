@@ -9,29 +9,28 @@
         android:id="@+id/placePhoto"
         android:layout_width="@dimen/place_photo_size"
         android:layout_height="@dimen/place_photo_size"
-        android:layout_marginTop="@dimen/margin32dp"
         android:adjustViewBounds="true"
         android:src="@drawable/camera"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.114"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/enterName"
+        android:layout_marginTop="@dimen/margin32dp" />
 
     <EditText
         android:id="@+id/enterName"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="@dimen/margin120dp"
         android:hint="Введите название продукта"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/placePhoto" />
 
     <EditText
         android:id="@+id/enterPrice"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="Введите цену продукта"
         android:layout_marginTop="@dimen/margin_top"
         app:layout_constraintTop_toBottomOf="@id/enterName"
@@ -41,7 +40,7 @@
     <EditText
         android:id="@+id/enterDescription"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="Введите описание продукта"
         android:layout_marginTop="@dimen/margin_top"
         app:layout_constraintTop_toBottomOf="@id/enterPrice"
@@ -49,20 +48,20 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <Spinner
-        android:id="@+id/chooseManufacturer"
+        android:id="@+id/chooseCategory"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="@dimen/margin_top"
         app:layout_constraintTop_toBottomOf="@id/enterDescription"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <Spinner
-        android:id="@+id/chooseCategory"
+        android:id="@+id/chooseManufacturer"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="@dimen/margin_top"
-        app:layout_constraintTop_toBottomOf="@id/chooseManufacturer"
+        app:layout_constraintTop_toBottomOf="@id/chooseCategory"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -72,9 +71,7 @@
         android:layout_height="wrap_content"
         android:text="Добавить продукт"
         android:layout_marginTop="@dimen/margin_top"
-        app:layout_constraintTop_toBottomOf="@id/chooseCategory"
+        app:layout_constraintTop_toBottomOf="@id/chooseManufacturer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

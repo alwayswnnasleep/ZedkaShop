@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -20,6 +23,7 @@ class ProductCatalogFragment : Fragment(R.layout.fragment_product_list) {
     private lateinit var recyclerView: RecyclerView
     private lateinit var productAdapter: ProductAdapter
     private val productList = mutableListOf<ProductDB>()
+    private lateinit var sortSpinner: Spinner
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +38,9 @@ class ProductCatalogFragment : Fragment(R.layout.fragment_product_list) {
 
         // Установить кнопку "Назад" в ActionBar
         (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        sortSpinner = view.findViewById(R.id.sortSpinner)
+        setupSpinner()
 
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -59,6 +66,21 @@ class ProductCatalogFragment : Fragment(R.layout.fragment_product_list) {
         loadProductsByCategory(arguments?.getString("category") ?: "")
     }
 
+    private fun setupSpinner() {
+        val sortOptions = arrayOf("Sort by Price", "Sort by Views", "Sort by Purchases")
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sortOptions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        sortSpinner.adapter = adapter
+
+        sortSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                sortProducts(position) // Вызов функции для сортировки продуктов по выбранному критерию
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        })
+    }
+
     private fun loadProductsByCategory(category: String) {
         firestore.collection("products")
             .whereEqualTo("category", category)
@@ -74,6 +96,15 @@ class ProductCatalogFragment : Fragment(R.layout.fragment_product_list) {
             .addOnFailureListener { e ->
                 e.printStackTrace()
             }
+    }
+
+    private fun sortProducts(criteria: Int) {
+        when (criteria) {
+            0 -> productList.sortBy { it.price.toDoubleOrNull() ?: 0.0 } // Сортировка по цене
+            1 -> productList.sortByDescending { it.views } // Сортировка по просмотрам
+            2 -> productList.sortByDescending { it.purchases } // Сортировка по покупкам
+        }
+        productAdapter.notifyDataSetChanged() // Уведомление адаптера о изменении данных
     }
 
     private fun addToCart(product: ProductDB) {
