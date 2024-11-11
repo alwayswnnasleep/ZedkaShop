@@ -8,6 +8,7 @@
     android:layout_margin="@dimen/margin_end_item_product"
     app:cardCornerRadius="@dimen/card_corner_radius"
     app:cardElevation="@dimen/card_elevation">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

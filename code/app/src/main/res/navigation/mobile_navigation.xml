@@ -45,12 +45,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_favorites"
-        android:name="com.example.zedkashop.ui.addingproduct.AddProductFragment"
-        android:label="@string/title_favorites"
-        tools:layout="@layout/fragment_favorites" />
-
-    <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.zedkashop.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
