@@ -38,9 +38,14 @@ class ViewPurchaseHistoryFragment : Fragment(R.layout.fragment_history) {
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2) // 2 товара в строке
 
-        productAdapter = ProductAdapter(requireContext(), productList, { product ->
-            navigateToProductDetail(product)
-        }, { /* Обработчик для добавления в корзину не нужен в истории */ })
+        productAdapter = ProductAdapter(
+            requireContext(),
+            productList,
+            { product -> navigateToProductDetail(product) }, // Handle product click
+            { /* Обработчик для добавления в корзину не нужен в истории */ },
+            {} // Empty lambda for onShowDetailsClick
+        )
+
         recyclerView.adapter = productAdapter
 
         loadPurchasedProducts()

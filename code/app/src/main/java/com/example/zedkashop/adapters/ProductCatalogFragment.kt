@@ -26,6 +26,17 @@ class ProductCatalogFragment : Fragment(R.layout.fragment_product_list) {
     private lateinit var sortSpinner: Spinner
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
+    // Массив с вариантами сортировки
+    private val sortOptions = arrayOf(
+        "Не выбрано",
+        "Сортировать по цене (возр.)",
+        "Сортировать по цене (уб.)",
+        "Сортировать по просмотрам (возр.)",
+        "Сортировать по просмотрам (уб.)",
+        "Сортировать по покупкам (возр.)",
+        "Сортировать по покупкам (уб.)"
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Установка заголовка ActionBar при создании фрагмента
@@ -46,28 +57,25 @@ class ProductCatalogFragment : Fragment(R.layout.fragment_product_list) {
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
         // Передаем необходимые параметры в ProductAdapter
-        productAdapter = ProductAdapter(requireContext(), productList,
+        productAdapter = ProductAdapter(
+            requireContext(),
+            productList,
             { product ->
-                // Логирование клика на продукт
+                // Log product click and navigate to detail fragment
                 Log.d("ProductCatalogFragment", "Product clicked: ${product.name}")
-
-                // Создание Bundle для передачи данных о продукте
-                val bundle = Bundle().apply {
-                    putSerializable("product", product) // Передаем продукт как Serializable
-                }
-
-                // Переход к детальному фрагменту с передачей данных
+                val bundle = Bundle().apply { putSerializable("product", product) }
                 findNavController().navigate(R.id.action_productCatalogFragment2_to_productDetailFragment, bundle)
             },
-            { product -> addToCart(product) } // Обработчик добавления в корзину
+            { product -> addToCart(product) },
+            { /* No specific action needed for onShowDetailsClick */ }
         )
+
 
         recyclerView.adapter = productAdapter
         loadProductsByCategory(arguments?.getString("category") ?: "")
     }
 
     private fun setupSpinner() {
-        val sortOptions = arrayOf("Sort by Price", "Sort by Views", "Sort by Purchases")
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sortOptions)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         sortSpinner.adapter = adapter
@@ -100,9 +108,12 @@ class ProductCatalogFragment : Fragment(R.layout.fragment_product_list) {
 
     private fun sortProducts(criteria: Int) {
         when (criteria) {
-            0 -> productList.sortBy { it.price.toDoubleOrNull() ?: 0.0 } // Сортировка по цене
-            1 -> productList.sortByDescending { it.views } // Сортировка по просмотрам
-            2 -> productList.sortByDescending { it.purchases } // Сортировка по покупкам
+            0 -> productList.sortBy { it.price.toDoubleOrNull() ?: 0.0 } // Сортировка по цене (возр.)
+            1 -> productList.sortByDescending { it.price.toDoubleOrNull() ?: 0.0 } // Сортировка по цене (уб.)
+            2 -> productList.sortBy { it.views } // Сортировка по просмотрам (возр.)
+            3 -> productList.sortByDescending { it.views } // Сортировка по просмотрам (уб.)
+            4 -> productList.sortBy { it.purchases } // Сортировка по покупкам (возр.)
+            5 -> productList.sortByDescending { it.purchases } // Сортировка по покупкам (уб.)
         }
         productAdapter.notifyDataSetChanged() // Уведомление адаптера о изменении данных
     }

@@ -37,9 +37,14 @@ class ViewHistoryFragment : Fragment(R.layout.fragment_history) {
         val layoutManager = GridLayoutManager(requireContext(), 2) // Два элемента в строке
         recyclerView.layoutManager = layoutManager
 
-        productAdapter = ProductAdapter(requireContext(), productList, { product ->
-            navigateToProductDetail(product)
-        }, { /* Обработчик для добавления в корзину не нужен в истории */ })
+        productAdapter = ProductAdapter(
+            requireContext(),
+            productList,
+            { product -> navigateToProductDetail(product) }, // Handle product click
+            { /* Обработчик для добавления в корзину не нужен в истории */ },
+            {} // Pass null for onShowDetailsClick
+        )
+
         recyclerView.adapter = productAdapter
 
         loadViewedProducts()

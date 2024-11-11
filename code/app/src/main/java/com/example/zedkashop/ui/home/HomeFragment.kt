@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -26,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.example.zedkashop.ui.history.HistoryManager
 
 
@@ -60,11 +62,15 @@ class HomeFragment : Fragment() {
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         brandsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        val productAdapter = ProductAdapter(requireContext(), filteredProducts,
-            { product -> onProductClick(product) },
-            { product -> addToCart(product) }
+        val productAdapter = ProductAdapter(
+            requireContext(),
+            filteredProducts,
+            onProductClick = { product -> onProductClick(product) },
+            onAddToCartClick = { product -> addToCart(product) },
+            onShowDetailsClick = { product -> showProductDetailsDialog(product) } // Pass showProductDetailsDialog here
         )
         recyclerView.adapter = productAdapter
+
 
         loadProducts()
         loadBrands()
@@ -134,7 +140,22 @@ class HomeFragment : Fragment() {
                 Toast.makeText(context, "Ошибка загрузки брендов: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
     }
+    private fun showProductDetailsDialog(product: ProductDB) {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_product_details, null)
+        val imageView: ImageView = dialogView.findViewById(R.id.dialogProductImage)
+        val descriptionView: TextView = dialogView.findViewById(R.id.dialogProductDescription)
 
+        Glide.with(requireContext())
+            .load(product.imageUrl)
+            .into(imageView)
+
+        descriptionView.text = product.description
+
+        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setPositiveButton("OK", null)
+            .show()
+    }
     private fun filterProducts(query: String) {
         filteredProducts.clear()
         if (query.isEmpty()) {

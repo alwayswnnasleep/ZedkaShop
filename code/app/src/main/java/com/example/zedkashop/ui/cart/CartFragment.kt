@@ -37,13 +37,11 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val productList = mutableListOf<ProductDB>()
     private var totalPrice: Double = 0.0
+    private val productQuantities = mutableMapOf<String, Int>() // To track quantities of products
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState) // Передаем savedInstanceState
-        (activity as AppCompatActivity).supportActionBar?.show()
-        (activity as AppCompatActivity).supportActionBar?.title = "Корзина"
+        super.onViewCreated(view, savedInstanceState)
 
-        // Инициализация элементов интерфейса
         recyclerView = view.findViewById(R.id.recyclerView)
         totalPriceTextView = view.findViewById(R.id.totalPriceTextView)
         buyButton = view.findViewById(R.id.buyButton)
@@ -54,8 +52,10 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             requireContext(),
             productList,
             { product -> navigateToProductDetail(product) },
-            { /* Обработчик добавления в корзину не нужен в корзине */ },
-            null,  // Мы не используем изменение количества в корзине
+            { /* No add to cart logic here */ },
+            { /* Show details logic */ },
+            { product, newQuantity -> updateProductQuantity(product, newQuantity) },  // Handle quantity change
+            productQuantities,
             isInCartFragment = true
         )
 
@@ -68,12 +68,29 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
         setupSwipeToDelete()
     }
-
     private fun navigateToProductDetail(product: ProductDB) {
         val bundle = Bundle().apply {
             putSerializable("product", product)
         }
         findNavController().navigate(R.id.action_navigation_cart_to_productDetailFragment, bundle)
+    }
+    private fun updateProductQuantity(product: ProductDB, newQuantity: Int) {
+        // Update the quantity in the map
+        productQuantities[product.id] = newQuantity
+
+        // Update Firestore cart
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val cartRef = firestore.collection("users").document(userId).collection("cart").document(product.id)
+
+        cartRef.update("quantity", newQuantity)
+            .addOnSuccessListener {
+                Log.d("CartFragment", "Quantity of product ${product.id} updated to $newQuantity")
+                totalPrice = 0.0
+                updateTotalPriceDisplay() // Recalculate total price
+            }
+            .addOnFailureListener { e ->
+                Log.e("CartFragment", "Error updating quantity: $e")
+            }
     }
 
     private fun loadCartProducts() {
@@ -83,14 +100,12 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         cartRef.get().addOnSuccessListener { snapshot ->
             if (snapshot.isEmpty) {
                 totalPriceTextView.text = "Корзина пуста"
-                // Скрываем кнопку "Купить", если корзина пуста
                 buyButton.visibility = View.GONE
-                return@addOnSuccessListener
+            } else {
+                buyButton.visibility = View.VISIBLE
             }
 
-            totalPrice = 0.0
             productList.clear()
-
             snapshot.documents.forEach { document ->
                 val productId = document.getString("productId") ?: return@forEach
                 loadProduct(productId)
@@ -106,11 +121,10 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                 val product = productDoc.toObject(ProductDB::class.java)
                 product?.let {
                     productList.add(it)
+                    productQuantities[it.id] = 1 // Initialize quantity to 1 for new products
                     totalPrice += (parsePrice(it.price) ?: 0.0)
                     updateTotalPriceDisplay()
                     productAdapter.notifyDataSetChanged()
-
-                    buyButton.visibility = View.VISIBLE
                 } ?: Log.e("CartFragment", "Продукт не найден для ID: $productId")
             }.addOnFailureListener { e ->
                 Log.e("CartFragment", "Ошибка при загрузке продукта: $e")
@@ -120,7 +134,6 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     private fun parsePrice(price: String): Double? {
         return price.replace("₽", "").replace(",", ".").trim().toDoubleOrNull()
     }
-
     private fun purchaseProducts() {
         Log.d("CartFragment", "Покупка товаров: $totalPrice")
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
@@ -185,6 +198,10 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     }
 
     private fun updateTotalPriceDisplay() {
+        totalPrice = productQuantities.entries.sumByDouble { (productId, quantity) ->
+            val product = productList.find { it.id == productId }
+            (parsePrice(product?.price ?: "") ?: 0.0) * quantity
+        }
         totalPriceTextView.text = "Общая стоимость: ${totalPrice} ₽"
         buyButton.text = "Купить за ${totalPrice} ₽"
     }

@@ -19,11 +19,11 @@ class ProductAdapter(
     private val products: List<ProductDB>,
     private val onProductClick: (ProductDB) -> Unit,
     private val onAddToCartClick: (ProductDB) -> Unit,
-
+    private val onShowDetailsClick: (ProductDB) -> Unit,
     private val onQuantityChange: ((ProductDB, Int) -> Unit)? = null,
     private val productQuantities: Map<String, Int> = emptyMap(), // Pass the map of quantities
     private val isInCartFragment: Boolean = false,
-    private val isInManageFragment: Boolean = false // New parameter for ManageFragment
+
 ) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
     companion object {
@@ -34,7 +34,7 @@ class ProductAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when {
-            isInManageFragment -> VIEW_TYPE_MANAGE
+
             isInCartFragment -> VIEW_TYPE_CART
             else -> VIEW_TYPE_PRODUCT
         }
@@ -48,11 +48,6 @@ class ProductAdapter(
                 CartViewHolder(view)
             }
 
-            VIEW_TYPE_MANAGE -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_product_manage, parent, false)
-                ManageViewHolder(view)
-            }
 
             else -> {
                 val view = LayoutInflater.from(parent.context)
@@ -102,12 +97,13 @@ class ProductAdapter(
             holder.addToCartButton.setOnClickListener {
                 onAddToCartClick(product)
             }
+            holder.itemView.setOnLongClickListener {
+                onShowDetailsClick(product)
+                true
+            }
         }
 
 
-        if (holder is ManageViewHolder) {
-
-        }
     }
 
     private fun updateButtonStates(holder: CartViewHolder, quantity: Int) {
@@ -147,6 +143,7 @@ class ProductAdapter(
         val quantityCounter: TextView = itemView.findViewById(R.id.quantityCounter)
         private val productCategory: TextView = itemView.findViewById(R.id.productCategory)
         private val productConsumer: TextView = itemView.findViewById(R.id.productManufacturer)
+
         override fun bind(product: ProductDB) {
             productName.text = product.name
             productPrice.text = product.price
@@ -155,34 +152,33 @@ class ProductAdapter(
             Glide.with(itemView.context)
                 .load(product.imageUrl)
                 .into(productImage)
-        }
-    }
 
-    // New ViewHolder for ManageFragment
-    inner class ManageViewHolder(itemView: View) : ViewHolder(itemView) {
-        private val productName: TextView = itemView.findViewById(R.id.productName)
-        private val productPrice: TextView = itemView.findViewById(R.id.productPrice)
-        private val productImage: ImageView = itemView.findViewById(R.id.productImage)
-        private val manageButton: Button = itemView.findViewById(R.id.manageButton)
-        private val productViews: TextView = itemView.findViewById(R.id.viewCount)
-        private val productPurchases: TextView = itemView.findViewById(R.id.purchaseCount)
-        private val productCategory: TextView = itemView.findViewById(R.id.productCategory)
-        private val productConsumer: TextView = itemView.findViewById(R.id.productManufacturer)
+            // Update the quantity counter based on productQuantities map
+            val quantity = productQuantities[product.id] ?: 1
+            quantityCounter.text = quantity.toString()
 
-        override fun bind(product: ProductDB) {
-            productName.text = product.name
-            productPrice.text = product.price
-            productCategory.text = product.category
-            productConsumer.text = product.consumer
-            productViews.text = product.views.toString()
-            productPurchases.text = product.purchases.toString()
+            buttonDecrease.setOnClickListener {
+                val currentQuantity = quantityCounter.text.toString().toInt()
+                if (currentQuantity > 1) {
+                    val newQuantity = currentQuantity - 1
+                    quantityCounter.text = newQuantity.toString()
+                    onQuantityChange?.invoke(product, newQuantity)
+                }
+            }
 
-            Glide.with(itemView.context)
-                .load(product.imageUrl)
-                .into(productImage)
+            buttonIncrease.setOnClickListener {
+                val currentQuantity = quantityCounter.text.toString().toInt()
+                val newQuantity = currentQuantity + 1
+                quantityCounter.text = newQuantity.toString()
+                onQuantityChange?.invoke(product, newQuantity)
+            }
 
-
+            // Update button states
+            updateButtonStates(quantity)
         }
 
+        private fun updateButtonStates(quantity: Int) {
+            buttonDecrease.isEnabled = quantity > 1
+        }
     }
 }
