@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="6dp">
+    android:layout_margin="@dimen/margin_top"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="@dimen/card_elevation">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:padding="@dimen/card_padding">
 
         <ImageView
             android:id="@+id/productImage"
@@ -23,10 +23,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="17dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/margin_end_item_product"
             android:layout_toEndOf="@+id/productImage"
-            android:paddingTop="8dp"
+            android:paddingTop="@dimen/home_fragment_padding"
             android:textSize="@dimen/text_size_large"
             android:textStyle="bold" />
 
@@ -35,8 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/productName"
-            android:layout_marginStart="17dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/margin_bottom_item_product"
             android:layout_toEndOf="@+id/productImage"
 
             android:textSize="@dimen/text_size_medium" />
@@ -46,8 +46,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/productCategory"
-            android:layout_marginStart="17dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginStart="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/margin_bottom_item_product"
             android:layout_toEndOf="@+id/productImage"
 
             android:textSize="@dimen/text_size_medium" />
@@ -58,11 +58,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/productImage"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:paddingTop="4dp"
+            android:layout_marginStart="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/margin_bottom_item_product"
             android:textColor="@android:color/holo_green_dark"
-            android:textSize="@dimen/text_size_medium"
+            android:textSize="@dimen/text_size_mega_large"
             android:textStyle="bold" />
 
         <TextView
@@ -70,35 +70,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/productImage"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginTop="@dimen/layout_margin28dp"
+            android:layout_marginEnd="@dimen/layout_margin20dp"
             android:layout_toStartOf="@+id/buttonIncrease"
+            android:textSize="@dimen/text_size_large"
             android:text="1"
-            android:textSize="18sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/buttonDecrease"
-            android:layout_width="45dp"
+            android:layout_width="@dimen/button_incdec"
             android:layout_height="wrap_content"
             android:layout_below="@+id/productImage"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="60dp"
+            android:layout_marginStart="@dimen/margin_end_item_product"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginEnd="@dimen/margin60dp"
             android:layout_toStartOf="@+id/buttonIncrease"
             android:text="-"
-            android:textSize="14sp" />
+            android:textSize="@dimen/text_size_small" />
 
         <Button
             android:id="@+id/buttonIncrease"
-            android:layout_width="45dp"
+            android:layout_width="@dimen/button_incdec"
             android:layout_height="wrap_content"
             android:layout_below="@+id/productImage"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="@dimen/margin_end_item_product"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:text="+"
-            android:textSize="14sp" />
+            android:textSize="@dimen/text_size_small" />
 
     </RelativeLayout>
 

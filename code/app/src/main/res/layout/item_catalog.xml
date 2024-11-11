@@ -3,16 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="260dp"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="6dp">
+    android:layout_height="@dimen/layout_height"
+    android:layout_margin="@dimen/margin_top"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="@dimen/card_elevation">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/card_padding">
 
         <ImageView
             android:id="@+id/imageView"
@@ -21,15 +21,15 @@
             android:layout_weight="1"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="@dimen/margin_end_item_product" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:paddingTop="4dp"
-            android:textSize="20sp"
+            android:paddingTop="@dimen/padding_top_text"
+            android:textSize="@dimen/text_size_mega_medium"
             android:textStyle="bold"
             android:ellipsize="end"
             android:maxLines="1" />
@@ -39,8 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:paddingTop="4dp"
-            android:textSize="16sp"
+            android:paddingTop="@dimen/padding_top_text"
+            android:textSize="@dimen/text_size_medium"
             android:maxLines="2"
             android:ellipsize="end" />
 
